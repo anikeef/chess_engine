@@ -1,4 +1,6 @@
 class ChessPiece
+  attr_reader :symbol
+
   def initialize(color)
     @color = color
   end

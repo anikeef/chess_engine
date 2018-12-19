@@ -1,3 +1,6 @@
+require "./lib/chesspiece.rb"
+require "colorize"
+
 class Board
 
   def initialize
@@ -24,5 +27,27 @@ class Board
         @board["#{column}#{row2}"] = Pawn.new(color)
       end
     end
+  end
+
+  def to_s
+    string = ""
+    colors = [[:default, :light_white].cycle, [:light_white, :default].cycle].cycle
+
+    8.downto(1) do |row|
+      string += "#{row} "
+      colors_cycle = colors.next
+
+      ["a", "b", "c", "d", "e", "f", "g", "h"].each do |column|
+        content = @board["#{column}#{row}"]
+        string += content.nil? ? " " : content.symbol
+        string += " "
+        string[-2..-1] = string[-2..-1].colorize(background: colors_cycle.next)
+      end
+
+      string += "\n"
+    end
+    
+    string += "  a b c d e f g h"
+    string
   end
 end
