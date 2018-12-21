@@ -30,7 +30,7 @@ end
 class Elephant < ChessPiece
   def initialize(color)
     super
-    @symbol = (@color == :black) ? "\u265D" : "\u2657"
+    @symbol = (@color == :black) ? "\u25B2" : "\u25B3"
   end
 end
 

@@ -30,8 +30,8 @@ end
 describe Elephant do
   describe "#initialize" do
     it "stores correct symbol" do
-      expect(Elephant.new(:black).instance_variable_get(:@symbol)).to eq("♝")
-      expect(Elephant.new(:white).instance_variable_get(:@symbol)).to eq("♗")
+      expect(Elephant.new(:black).instance_variable_get(:@symbol)).to eq("▲")
+      expect(Elephant.new(:white).instance_variable_get(:@symbol)).to eq("△")
     end
   end
 end
