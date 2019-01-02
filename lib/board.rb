@@ -31,6 +31,14 @@ class Board
     end
   end
 
+  def [](square)
+    @board[square]
+  end
+
+  def []=(square, piece)
+    @board[square] = piece
+  end
+
   def to_s
     string = ""
     colors = [[:default, :light_white].cycle, [:light_white, :default].cycle].cycle
