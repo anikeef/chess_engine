@@ -17,7 +17,8 @@ class ChessPiece
       line = area.find { |array| array.include?(@position) }
       index = line.find_index(@position)
 
-      [line[0..(index - 1)].reverse, line[(index + 1)..-1]].each do |arr|
+      [line.take_while.with_index { |a, i| i < index }.reverse,
+       line.drop_while.with_index { |a, i| i <= index }].each do |arr|
         arr.each do |square_label|
           square = @board[square_label]
 
