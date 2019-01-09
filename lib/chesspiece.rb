@@ -1,14 +1,8 @@
-require "./lib/diagonals.rb"
+require "./lib/chess_board_labels.rb"
 
 class ChessPiece
   attr_reader :symbol, :color
-
-  @@rows = ["8", "7", "6", "5", "4", "3", "2", "1"].map do |row|
-    ["a", "b", "c", "d", "e", "f", "g", "h"].map { |column| "#{column}#{row}" }
-  end
-  @@columns = @@rows.transpose
-  @@left_diagonals = @@rows.get_left_diagonals
-  @@right_diagonals = @@rows.get_right_diagonals
+  include ChessBoardLabels
 
   def initialize(color)
     @color = color
@@ -33,6 +27,7 @@ class ChessPiece
           else
             break
           end
+
         end
       end
     end
@@ -54,7 +49,7 @@ class Rook < ChessPiece
   end
 
   def get_allowed_moves(position, current_board)
-    super(position, current_board, [@@rows, @@columns])
+    super(position, current_board, [ROWS, COLUMNS])
   end
 end
 
@@ -72,7 +67,7 @@ class Elephant < ChessPiece
   end
 
   def get_allowed_moves(position, current_board)
-    super(position, current_board, [@@left_diagonals, @@right_diagonals])
+    super(position, current_board, [LEFT_DIAGONALS, RIGHT_DIAGONALS])
   end
 end
 
@@ -90,6 +85,6 @@ class Queen < ChessPiece
   end
 
   def get_allowed_moves(position, current_board)
-    super(position, current_board, [@@rows, @@columns, @@left_diagonals, @@right_diagonals])
+    super(position, current_board, [ROWS, COLUMNS, LEFT_DIAGONALS, RIGHT_DIAGONALS])
   end
 end
