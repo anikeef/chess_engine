@@ -4,20 +4,22 @@ class ChessPiece
   attr_reader :symbol, :color
   include ChessBoardLabels
 
-  def initialize(color)
+  def initialize(color, board, position)
     @color = color
+    @board = board
+    @position = position
   end
 
-  def get_allowed_moves(position, current_board, areas)
+  def get_allowed_moves(areas)
     allowed_moves = []
 
     areas.each do |area|
-      line = area.find { |array| array.include?(position) }
-      index = line.find_index(position)
+      line = area.find { |array| array.include?(@position) }
+      index = line.find_index(@position)
 
       [line[0..(index - 1)].reverse, line[(index + 1)..-1]].each do |arr|
         arr.each do |square_label|
-          square = current_board[square_label]
+          square = @board[square_label]
 
           if square.nil?
             allowed_moves << square_label
@@ -36,55 +38,55 @@ class ChessPiece
 end
 
 class Pawn < ChessPiece
-  def initialize(color)
+  def initialize(color, board, position)
     super
     @symbol = (@color == :black) ? "\u265F" : "\u2659"
   end
 end
 
 class Rook < ChessPiece
-  def initialize(color)
+  def initialize(color, board, position)
     super
     @symbol = (@color == :black) ? "\u265C" : "\u2656"
   end
 
-  def get_allowed_moves(position, current_board)
-    super(position, current_board, [ROWS, COLUMNS])
+  def get_allowed_moves
+    super([ROWS, COLUMNS])
   end
 end
 
 class Knight < ChessPiece
-  def initialize(color)
+  def initialize(color, board, position)
     super
     @symbol = (@color == :black) ? "\u265E" : "\u2658"
   end
 end
 
 class Elephant < ChessPiece
-  def initialize(color)
+  def initialize(color, board, position)
     super
     @symbol = (@color == :black) ? "\u25B2" : "\u25B3"
   end
 
-  def get_allowed_moves(position, current_board)
-    super(position, current_board, [LEFT_DIAGONALS, RIGHT_DIAGONALS])
+  def get_allowed_moves
+    super([LEFT_DIAGONALS, RIGHT_DIAGONALS])
   end
 end
 
 class King < ChessPiece
-  def initialize(color)
+  def initialize(color, board, position)
     super
     @symbol = (@color == :black) ? "\u265A" : "\u2654"
   end
 end
 
 class Queen < ChessPiece
-  def initialize(color)
+  def initialize(color, board, position)
     super
     @symbol = (@color == :black) ? "\u265B" : "\u2655"
   end
 
-  def get_allowed_moves(position, current_board)
-    super(position, current_board, [ROWS, COLUMNS, LEFT_DIAGONALS, RIGHT_DIAGONALS])
+  def get_allowed_moves
+    super([ROWS, COLUMNS, LEFT_DIAGONALS, RIGHT_DIAGONALS])
   end
 end

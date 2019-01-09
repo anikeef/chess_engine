@@ -16,17 +16,17 @@ class Board
 
   def set_default
     [[:white, 1, 2], [:black, 8, 7]].each do |color, row1, row2|
-      @board["a#{row1}"] = Rook.new(color)
-      @board["h#{row1}"] = Rook.new(color)
-      @board["b#{row1}"] = Knight.new(color)
-      @board["g#{row1}"] = Knight.new(color)
-      @board["c#{row1}"] = Elephant.new(color)
-      @board["f#{row1}"] = Elephant.new(color)
-      @board["d#{row1}"] = Queen.new(color)
-      @board["e#{row1}"] = King.new(color)
+      @board["a#{row1}"] = Rook.new(color, self, "a#{row1}")
+      @board["h#{row1}"] = Rook.new(color, self, "h#{row1}")
+      @board["b#{row1}"] = Knight.new(color, self, "b#{row1}")
+      @board["g#{row1}"] = Knight.new(color, self, "g#{row1}")
+      @board["c#{row1}"] = Elephant.new(color, self, "c#{row1}")
+      @board["f#{row1}"] = Elephant.new(color, self, "f#{row1}")
+      @board["d#{row1}"] = Queen.new(color, self, "d#{row1}")
+      @board["e#{row1}"] = King.new(color, self, "e#{row1}")
 
       ["a", "b", "c", "d", "e", "f", "g", "h"].each do |column|
-        @board["#{column}#{row2}"] = Pawn.new(color)
+        @board["#{column}#{row2}"] = Pawn.new(color, self, "#{column}#{row2}")
       end
     end
   end
