@@ -10,7 +10,7 @@ class ChessPiece
     @position = position
   end
 
-  def get_allowed_moves(areas)
+  def allowed_moves(areas)
     allowed_moves = []
 
     areas.each do |area|
@@ -51,7 +51,7 @@ class Rook < ChessPiece
     @symbol = (@color == :black) ? "\u265C" : "\u2656"
   end
 
-  def get_allowed_moves
+  def allowed_moves
     super([ROWS, COLUMNS])
   end
 end
@@ -69,7 +69,7 @@ class Elephant < ChessPiece
     @symbol = (@color == :black) ? "\u25B2" : "\u25B3"
   end
 
-  def get_allowed_moves
+  def allowed_moves
     super([LEFT_DIAGONALS, RIGHT_DIAGONALS])
   end
 end
@@ -87,7 +87,7 @@ class Queen < ChessPiece
     @symbol = (@color == :black) ? "\u265B" : "\u2655"
   end
 
-  def get_allowed_moves
+  def allowed_moves
     super([ROWS, COLUMNS, LEFT_DIAGONALS, RIGHT_DIAGONALS])
   end
 end

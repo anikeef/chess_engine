@@ -28,18 +28,18 @@ describe Rook do
     end
   end
 
-  describe "#get_allowed_moves" do
+  describe "#allowed_moves" do
     it "returns empty array in initial position" do
       b = Board.new
       b.set_default
-      expect(b["a1"].get_allowed_moves).to eq([])
+      expect(b["a1"].allowed_moves).to eq([])
     end
 
     it "returns allowed moves from the middle of the board" do
       b = Board.new
       b.set_default
       b["d4"] = Rook.new(:black, b, "d4")
-      expect(b["d4"].get_allowed_moves).to eq(["c4", "b4", "a4", "e4", "f4", "g4", "h4", "d5", "d6", "d3", "d2"])
+      expect(b["d4"].allowed_moves).to eq(["c4", "b4", "a4", "e4", "f4", "g4", "h4", "d5", "d6", "d3", "d2"])
     end
   end
 end
@@ -61,18 +61,18 @@ describe Elephant do
     end
   end
 
-  describe "#get_allowed_moves" do
+  describe "#allowed_moves" do
     it "returns empty array in initial position" do
       b = Board.new
       b.set_default
-      expect(b["c8"].get_allowed_moves).to eq([])
+      expect(b["c8"].allowed_moves).to eq([])
     end
 
     it "returns allowed moves from the middle of the board" do
       b = Board.new
       b.set_default
       b["d4"] = Elephant.new(:white, b, "d4")
-      expect(b["d4"].get_allowed_moves).to eq(["e5", "f6", "g7", "c3", "c5", "b6", "a7", "e3"])
+      expect(b["d4"].allowed_moves).to eq(["e5", "f6", "g7", "c3", "c5", "b6", "a7", "e3"])
     end
   end
 end
@@ -94,18 +94,18 @@ describe Queen do
     end
   end
 
-  describe "#get_allowed_moves" do
+  describe "#allowed_moves" do
     it "returns empty array in initial position" do
       b = Board.new
       b.set_default
-      expect(b["d1"].get_allowed_moves).to eq([])
+      expect(b["d1"].allowed_moves).to eq([])
     end
 
     it "returns allowed moves from the middle of the board" do
       b = Board.new
       b.set_default
       b["d4"] = Queen.new(:white, b, "d4")
-      expect(b["d4"].get_allowed_moves).to eq(["c4", "b4", "a4", "e4", "f4", "g4", "h4", "d5", "d6", "d7", "d3","e5", "f6", "g7", "c3", "c5", "b6", "a7", "e3"])
+      expect(b["d4"].allowed_moves).to eq(["c4", "b4", "a4", "e4", "f4", "g4", "h4", "d5", "d6", "d7", "d3","e5", "f6", "g7", "c3", "c5", "b6", "a7", "e3"])
     end
   end
 end
