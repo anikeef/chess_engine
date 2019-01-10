@@ -4,13 +4,12 @@ require "colorize"
 class IncorrectInput < StandardError; end
 
 class Board
+  include ChessBoardLabels
 
   def initialize
     @board = {}
-    ["8", "7", "6", "5", "4", "3", "2", "1"].each do |string|
-      ["a", "b", "c", "d", "e", "f", "g", "h"].each do |column|
-        @board["#{column}#{string}"] = nil
-      end
+    ROWS.each do |row|
+      row.each { |label| @board[label] = nil }
     end
   end
 
@@ -25,7 +24,7 @@ class Board
       @board["d#{row1}"] = Queen.new(color, self, "d#{row1}")
       @board["e#{row1}"] = King.new(color, self, "e#{row1}")
 
-      ["a", "b", "c", "d", "e", "f", "g", "h"].each do |column|
+      COLUMN_LETTERS.each do |column|
         @board["#{column}#{row2}"] = Pawn.new(color, self, "#{column}#{row2}")
       end
     end
@@ -47,7 +46,7 @@ class Board
       string += "#{row} "
       colors_cycle = colors.next
 
-      ["a", "b", "c", "d", "e", "f", "g", "h"].each do |column|
+      COLUMN_LETTERS.each do |column|
         content = @board["#{column}#{row}"]
         string += content.nil? ? " " : content.symbol
         string += " "
