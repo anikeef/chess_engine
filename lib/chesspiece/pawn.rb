@@ -9,8 +9,8 @@ class Pawn < ChessPiece
     @moves = 0
   end
 
-  def allowed_moves
-    allowed_moves = []
+  def valid_moves
+    valid_moves = []
     direction = @color == :black ? 1 : -1
     column_index = COLUMN_LETTERS.find_index(@position[0])
     row_index = 8 - @position[1].to_i
@@ -20,15 +20,15 @@ class Pawn < ChessPiece
 
     next_square_label = next_row[column_index]
     next_square = @board[next_square_label]
-    allowed_moves << next_square_label if next_square.nil? || next_square.color != @color
-    allowed_moves << column[row_index + 2 * direction] if @moves == 0 && next_square.nil?
+    valid_moves << next_square_label if next_square.nil? || next_square.color != @color
+    valid_moves << column[row_index + 2 * direction] if @moves == 0 && next_square.nil?
 
     [column_index - 1, column_index + 1].each do |index|
       next unless index.between?(0, 7)
       square_label = next_row[index]
       square = @board[square_label]
-      allowed_moves << square_label unless square.nil? || square.color == @color
+      valid_moves << square_label unless square.nil? || square.color == @color
     end
-    allowed_moves
+    valid_moves
   end
 end

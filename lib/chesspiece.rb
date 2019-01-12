@@ -10,8 +10,8 @@ class ChessPiece
     @position = position
   end
 
-  def allowed_moves(areas)
-    allowed_moves = []
+  def valid_moves(areas)
+    valid_moves = []
 
     areas.each do |area|
       line = area.find { |array| array.include?(@position) }
@@ -23,9 +23,9 @@ class ChessPiece
           square = @board[square_label]
 
           if square.nil?
-            allowed_moves << square_label
+            valid_moves << square_label
           elsif square.color != @color
-            allowed_moves << square_label
+            valid_moves << square_label
             break
           else
             break
@@ -34,6 +34,6 @@ class ChessPiece
         end
       end
     end
-    allowed_moves
+    valid_moves
   end
 end

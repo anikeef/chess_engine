@@ -6,7 +6,7 @@ class Rook < ChessPiece
     @symbol = (@color == :black) ? "\u265C" : "\u2656"
   end
 
-  def allowed_moves
+  def valid_moves
     super([ROWS, COLUMNS])
   end
 end

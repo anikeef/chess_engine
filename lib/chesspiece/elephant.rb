@@ -6,7 +6,7 @@ class Elephant < ChessPiece
     @symbol = (@color == :black) ? "\u25B2" : "\u25B3"
   end
 
-  def allowed_moves
+  def valid_moves
     super([LEFT_DIAGONALS, RIGHT_DIAGONALS])
   end
 end

@@ -16,8 +16,8 @@ class Game
     raise IncorrectInput, "Empty square is chosen" if chesspiece.nil?
     raise IncorrectInput, "This is not your piece" unless chesspiece.color == @current_player.color
 
-    allowed_moves = chesspiece.allowed_moves(from)
-    raise IncorrectInput, "Illegal step" unless allowed_moves.include?(to)
+    valid_moves = chesspiece.valid_moves(from)
+    raise IncorrectInput, "Illegal step" unless valid_moves.include?(to)
     raise IncorrectInput, "You can't beat your own piece" if !@board[to].nil? && @board[to].color == chesspiece.color
 
     @board.move_piece(from, to)
