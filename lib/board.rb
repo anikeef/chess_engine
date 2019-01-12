@@ -52,10 +52,9 @@ class Board
         string += " "
         string[-2..-1] = string[-2..-1].colorize(background: colors_cycle.next)
       end
-
       string += "\n"
     end
-
+    
     string += "  a b c d e f g h"
     string
   end
