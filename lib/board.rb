@@ -1,5 +1,7 @@
 require "./lib/chesspiece.rb"
 require "colorize"
+require "./lib/chess_board_labels.rb"
+Dir["./lib/chesspiece/*.rb"].each { |file| require file }
 
 class IncorrectInput < StandardError; end
 
@@ -54,7 +56,7 @@ class Board
       end
       string += "\n"
     end
-    
+
     string += "  a b c d e f g h"
     string
   end
