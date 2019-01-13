@@ -32,6 +32,18 @@ class Board
     @board[column][row] = piece
   end
 
+  def at(coordinates)
+    return nil unless self.exists_at?(coordinates)
+    @board[coordinates[0]][coordinates[1]]
+  end
+
+  def set_at(coordinates, piece)
+    @board[coordinates[0]][coordinates[1]] = piece
+  end
+
+  def exists_at?(coordinates)
+    return false unless coordinates.all? { |c| c.between?(0, 7) }
+    return true
   end
 
   def to_s
@@ -55,10 +67,9 @@ class Board
     string
   end
 
-  def move_piece(point_from, point_to)
-    raise IncorrectInput if @board[point_from].nil?
-    piece = @board[point_from]
-    @board[point_from] = nil
-    @board[point_to] = piece
+  def move_piece(from, to)
+    piece = self.at(from)
+    self.set_at(from, nil)
+    self.set_at(to, piece)
   end
 end
