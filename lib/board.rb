@@ -42,8 +42,7 @@ class Board
   end
 
   def exists_at?(coordinates)
-    return false unless coordinates.all? { |c| c.between?(0, 7) }
-    return true
+    coordinates.all? { |c| c.between?(0, 7) }
   end
 
   def to_s
@@ -55,7 +54,7 @@ class Board
       colors_cycle = colors.next
 
       0.upto(7) do |column|
-        piece = @board[column][row]
+        piece = self[column, row]
         string += piece.nil? ? " " : piece.symbol
         string += " "
         string[-2..-1] = string[-2..-1].colorize(background: colors_cycle.next)
