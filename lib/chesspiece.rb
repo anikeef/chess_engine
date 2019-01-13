@@ -36,4 +36,8 @@ class ChessPiece
     end
     valid_moves
   end
+
+  def valid_move?(piece)
+    piece.nil? || piece.color != @color
+  end
 end
