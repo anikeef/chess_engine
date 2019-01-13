@@ -9,48 +9,42 @@ class Board
   include ChessBoardLabels
 
   def initialize
-    @board = {}
-    ROWS.each do |row|
-      row.each { |label| @board[label] = nil }
-    end
+    @board = Array.new(8) { Array.new(8) { nil } }
   end
 
   def set_default
-    [[:white, 1, 2], [:black, 8, 7]].each do |color, row1, row2|
-      @board["a#{row1}"] = Rook.new(color, self, "a#{row1}")
-      @board["h#{row1}"] = Rook.new(color, self, "h#{row1}")
-      @board["b#{row1}"] = Knight.new(color, self, "b#{row1}")
-      @board["g#{row1}"] = Knight.new(color, self, "g#{row1}")
-      @board["c#{row1}"] = Elephant.new(color, self, "c#{row1}")
-      @board["f#{row1}"] = Elephant.new(color, self, "f#{row1}")
-      @board["d#{row1}"] = Queen.new(color, self, "d#{row1}")
-      @board["e#{row1}"] = King.new(color, self, "e#{row1}")
+    [[:white, 0, 1], [:black, 7, 6]].each do |color, row1, row2|
+      [Rook, Knight, Elephant, Queen, King, Elephant, Knight, Rook].each.with_index do |piece, column|
+        self[column, row1] = piece.new(color, self, [column, row1])
+      end
 
-      COLUMN_LETTERS.each do |column|
-        @board["#{column}#{row2}"] = Pawn.new(color, self, "#{column}#{row2}")
+      0.upto(7) do |column|
+        self[column, row2] = Pawn.new(color, self, "#{column}#{row2}")
       end
     end
   end
 
-  def [](square)
-    @board[square]
+  def [](column, row)
+    @board[column][row]
   end
 
-  def []=(square, piece)
-    @board[square] = piece
+  def []=(column, row, piece)
+    @board[column][row] = piece
+  end
+
   end
 
   def to_s
     string = ""
     colors = [[:default, :light_white].cycle, [:light_white, :default].cycle].cycle
 
-    8.downto(1) do |row|
-      string += "#{row} "
+    7.downto(0) do |row|
+      string += "#{row + 1} "
       colors_cycle = colors.next
 
-      COLUMN_LETTERS.each do |column|
-        content = @board["#{column}#{row}"]
-        string += content.nil? ? " " : content.symbol
+      0.upto(7) do |column|
+        piece = @board[column][row]
+        string += piece.nil? ? " " : piece.symbol
         string += " "
         string[-2..-1] = string[-2..-1].colorize(background: colors_cycle.next)
       end
