@@ -10,34 +10,33 @@ class ChessPiece
     @position = position
   end
 
-  def valid_moves(areas)
-    valid_moves = []
-
-    areas.each do |area|
-      line = area.find { |array| array.include?(@position) }
-      index = line.find_index(@position)
-
-      [line.take_while.with_index { |a, i| i < index }.reverse,
-       line.drop_while.with_index { |a, i| i <= index }].each do |arr|
-        arr.each do |square_label|
-          square = @board[square_label]
-
-          if square.nil?
-            valid_moves << square_label
-          elsif square.color != @color
-            valid_moves << square_label
-            break
-          else
-            break
-          end
-
-        end
-      end
-    end
-    valid_moves
+  def valid_moves(steps)
+    steps.map do |horizontal_step, vertical_step|
+       coordinates = [@position[0] + horizontal_step, @position[1] + vertical_step]
+       coordinates if valid_move?(coordinates)
+     end.compact
   end
 
-  def valid_move?(piece)
-    piece.nil? || piece.color != @color
+  def valid_moves_recursive(steps)
+    steps.inject([]) { |valid_moves, step| valid_moves.push(*repeated_step(step)) }
+  end
+
+  def repeated_step(step, position = @position, valid_moves = [])
+    coordinates = [position[0] + step[0], position[1] + step[1]]
+    return valid_moves unless valid_move?(coordinates)
+    return valid_moves << coordinates unless @board.at(coordinates).nil?
+    repeated_step(step, coordinates, valid_moves << coordinates)
+  end
+
+  def valid_move?(coordinates)
+    if @board.exists_at?(coordinates)
+      piece = @board.at(coordinates)
+      return piece.nil? || piece.color != @color
+    end
+    return false
+  end
+
+  def relative_coordinates(step) do
+    [@position[0] + step[0], @position[1] + step[1]]
   end
 end
