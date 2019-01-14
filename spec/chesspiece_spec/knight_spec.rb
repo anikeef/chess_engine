@@ -9,25 +9,24 @@ describe Knight do
   end
 
   describe "#valid_moves" do
+    before(:each) do
+      @board = Board.new
+      @board.set_default
+    end
+
     it "returns valid moves in initial position" do
-      b = Board.new
-      b.set_default
-      expect(b["b1"].valid_moves).to eq(["c3", "a3"])
-      expect(b["g8"].valid_moves).to eq(["h6", "f6"])
+      expect(@board[1, 0].valid_moves).to contain_exactly([2, 2], [0, 2])
+      expect(@board[6, 7].valid_moves).to contain_exactly([5, 5], [7, 5])
     end
 
     it "returns valid moves from the middle of the board" do
-      b = Board.new
-      b.set_default
-      b["d5"] = Knight.new(:white, b, "d5")
-      expect(b["d5"].valid_moves).to eq(["e3", "c3", "e7", "c7", "f4", "b4", "f6", "b6"] )
+      @board[3, 4] = Knight.new(:white, @board, [3, 4])
+      expect(@board[3, 4].valid_moves).to contain_exactly([1, 5], [2, 6], [4, 6], [5, 5], [5, 3], [1, 3], [2, 2], [4, 2])
     end
 
     it "returns valid moves from outside positions" do
-      b = Board.new
-      b.set_default
-      b["h3"] = Knight.new(:black, b, "h3")
-      expect(b["h3"].valid_moves).to eq(["g1", "g5", "f2", "f4"])
+      @board[7, 2] = Knight.new(:black, @board, [7, 2])
+      expect(@board[7, 2].valid_moves).to contain_exactly([6, 0], [6, 4], [5, 3], [5, 1])
     end
   end
 end

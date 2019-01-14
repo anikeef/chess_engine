@@ -9,17 +9,18 @@ describe Rook do
   end
 
   describe "#valid_moves" do
+    before(:each) do
+      @board = Board.new
+      @board.set_default
+    end
+
     it "returns empty array in initial position" do
-      b = Board.new
-      b.set_default
-      expect(b["a1"].valid_moves).to eq([])
+      expect(@board[0, 0].valid_moves).to eq([])
     end
 
     it "returns valid moves from the middle of the board" do
-      b = Board.new
-      b.set_default
-      b["d4"] = Rook.new(:black, b, "d4")
-      expect(b["d4"].valid_moves).to eq(["c4", "b4", "a4", "e4", "f4", "g4", "h4", "d5", "d6", "d3", "d2"])
+      @board[3, 3] = Rook.new(:black, @board, [3, 3])
+      expect(@board[3, 3].valid_moves).to contain_exactly([3, 4], [3, 5], [3, 2], [3, 1], [4, 3], [5, 3], [6, 3], [7, 3], [2, 3], [1, 3], [0, 3])
     end
   end
 end

@@ -7,6 +7,6 @@ class Elephant < ChessPiece
   end
 
   def valid_moves
-    super([LEFT_DIAGONALS, RIGHT_DIAGONALS])
+    valid_moves_recursive([[1, 1], [1, -1], [-1, 1], [-1, -1]])
   end
 end

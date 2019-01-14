@@ -9,17 +9,18 @@ describe Queen do
   end
 
   describe "#valid_moves" do
+    before(:each) do
+      @board = Board.new
+      @board.set_default
+    end
+
     it "returns empty array in initial position" do
-      b = Board.new
-      b.set_default
-      expect(b["d1"].valid_moves).to eq([])
+      expect(@board[3, 0].valid_moves).to eq([])
     end
 
     it "returns valid moves from the middle of the board" do
-      b = Board.new
-      b.set_default
-      b["d4"] = Queen.new(:white, b, "d4")
-      expect(b["d4"].valid_moves).to eq(["c4", "b4", "a4", "e4", "f4", "g4", "h4", "d5", "d6", "d7", "d3","e5", "f6", "g7", "c3", "c5", "b6", "a7", "e3"])
+      @board[3, 3] = Queen.new(:white, @board, [3, 3])
+      expect(@board[3, 3].valid_moves).to contain_exactly([3, 4], [3, 5], [3, 6], [3, 2], [4, 3], [5, 3], [6, 3], [7, 3], [4, 2], [4, 4], [5, 5], [6, 6], [2, 3], [1, 3], [0, 3], [2, 4], [1, 5], [0, 6], [2, 2])
     end
   end
 end

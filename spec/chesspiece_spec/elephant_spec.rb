@@ -9,17 +9,18 @@ describe Elephant do
   end
 
   describe "#valid_moves" do
+    before(:each) do
+      @board = Board.new
+      @board.set_default
+    end
+
     it "returns empty array in initial position" do
-      b = Board.new
-      b.set_default
-      expect(b["c8"].valid_moves).to eq([])
+      expect(@board[2, 0].valid_moves).to eq([])
     end
 
     it "returns valid moves from the middle of the board" do
-      b = Board.new
-      b.set_default
-      b["d4"] = Elephant.new(:white, b, "d4")
-      expect(b["d4"].valid_moves).to eq(["e5", "f6", "g7", "c3", "c5", "b6", "a7", "e3"])
+      @board[3, 3] = Elephant.new(:white, @board, [3, 3])
+      expect(@board[3, 3].valid_moves).to contain_exactly([4, 4], [5, 5], [6, 6], [2, 2], [2, 4], [1, 5], [0, 6], [4, 2])
     end
   end
 end

@@ -7,6 +7,6 @@ class Queen < ChessPiece
   end
 
   def valid_moves
-    super([ROWS, COLUMNS, LEFT_DIAGONALS, RIGHT_DIAGONALS])
+    valid_moves_recursive([0, 1, -1, 1, -1].permutation(2).to_a.uniq)
   end
 end

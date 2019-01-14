@@ -7,6 +7,6 @@ class Rook < ChessPiece
   end
 
   def valid_moves
-    super([ROWS, COLUMNS])
+    valid_moves_recursive([[0, 1], [0, -1], [1, 0], [-1, 0]])
   end
 end
