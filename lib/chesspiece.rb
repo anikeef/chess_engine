@@ -11,8 +11,8 @@ class ChessPiece
   end
 
   def valid_moves(steps)
-    steps.map do |horizontal_step, vertical_step|
-       coordinates = [@position[0] + horizontal_step, @position[1] + vertical_step]
+    steps.map do |step|
+       coordinates = relative_coordinates(step)
        coordinates if valid_move?(coordinates)
      end.compact
   end
@@ -22,7 +22,7 @@ class ChessPiece
   end
 
   def repeated_step(step, position = @position, valid_moves = [])
-    coordinates = [position[0] + step[0], position[1] + step[1]]
+    coordinates = relative_coordinates(step, position)
     return valid_moves unless valid_move?(coordinates)
     return valid_moves << coordinates unless @board.at(coordinates).nil?
     repeated_step(step, coordinates, valid_moves << coordinates)
@@ -36,7 +36,7 @@ class ChessPiece
     return false
   end
 
-  def relative_coordinates(step) do
-    [@position[0] + step[0], @position[1] + step[1]]
+  def relative_coordinates(step, position = @position)
+    [position[0] + step[0], position[1] + step[1]]
   end
 end
