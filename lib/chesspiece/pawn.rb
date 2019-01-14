@@ -11,24 +11,15 @@ class Pawn < ChessPiece
 
   def valid_moves
     valid_moves = []
-    direction = @color == :black ? 1 : -1
-    column_index = COLUMN_LETTERS.find_index(@position[0])
-    row_index = 8 - @position[1].to_i
-    column = COLUMNS[column_index]
-    row = ROWS[row_index]
-    next_row = ROWS[row_index + direction]
+    direction = @color == :white ? 1 : -1
 
-    next_square_label = next_row[column_index]
-    next_square = @board[next_square_label]
-    valid_moves << next_square_label if next_square.nil? || next_square.color != @color
-    valid_moves << column[row_index + 2 * direction] if @moves == 0 && next_square.nil?
+    coordinates = relative_coordinates([0, direction])
+    next_piece = @board.at(coordinates)
+    valid_moves << coordinates  if valid_move?(coordinates)
+    coordinates = relative_coordinates([0, direction * 2])
+    valid_moves << coordinates if @moves == 0 && valid_move?(coordinates) && next_piece.nil?
 
-    [column_index - 1, column_index + 1].each do |index|
-      next unless index.between?(0, 7)
-      square_label = next_row[index]
-      square = @board[square_label]
-      valid_moves << square_label unless square.nil? || square.color == @color
-    end
+    valid_moves.push(*super([[-1, direction], [1, direction]]).reject { |coord| @board.at(coord).nil? })
     valid_moves
   end
 end

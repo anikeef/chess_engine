@@ -19,7 +19,7 @@ class Board
       end
 
       0.upto(7) do |column|
-        self[column, row2] = Pawn.new(color, self, "#{column}#{row2}")
+        self[column, row2] = Pawn.new(color, self, [column, row2])
       end
     end
   end

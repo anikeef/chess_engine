@@ -16,45 +16,45 @@ describe Pawn do
 
     context "white piece" do
       it "returns valid moves in initial position" do
-        expect(@board["a2"].valid_moves).to eq(["a3", "a4"])
+        expect(@board[2, 1].valid_moves).to contain_exactly([2, 2], [2, 3])
       end
 
       it "captures diagonally" do
-        @board["c6"] = Pawn.new(:white, @board, "c6")
-        expect(@board["c6"].valid_moves).to eq(["c7", "b7", "d7"])
+        pawn = Pawn.new(:white, @board, [2, 5])
+        expect(pawn.valid_moves).to contain_exactly([2, 6], [1, 6], [3, 6])
       end
 
       it "returns valid moves from the middle of the board" do
-        @board["c4"] = Pawn.new(:white, @board, "c4")
-        @board["c4"].moves = 1
-        expect(@board["c4"].valid_moves).to eq(["c5"])
+        pawn = Pawn.new(:white, @board, [2, 3])
+        pawn.moves = 1
+        expect(pawn.valid_moves).to eq([[2, 4]])
       end
 
       it "returns valid moves from the edge of the board" do
-        @board["a6"] = Pawn.new(:white, @board, "a6")
-        expect(@board["a6"].valid_moves).to eq(["a7", "b7"])
+        pawn = Pawn.new(:white, @board, [0, 5])
+        expect(pawn.valid_moves).to contain_exactly([0, 6], [1, 6])
       end
     end
 
     context "black piece" do
       it "returns valid moves in initial position" do
-        expect(@board["a7"].valid_moves).to eq(["a6", "a5"])
+        expect(@board[0, 6].valid_moves).to contain_exactly([0, 5], [0, 4])
       end
 
       it "captures diagonally" do
-        @board["c3"] = Pawn.new(:black, @board, "c3")
-        expect(@board["c3"].valid_moves).to eq(["c2", "b2", "d2"])
+        pawn = Pawn.new(:black, @board, [2, 2])
+        expect(pawn.valid_moves).to contain_exactly([1, 1], [2, 1], [3, 1])
       end
 
       it "returns valid moves from the middle of the board" do
-        @board["c5"] = Pawn.new(:black, @board, "c5")
-        @board["c5"].moves = 1
-        expect(@board["c5"].valid_moves).to eq(["c4"])
+        pawn = Pawn.new(:black, @board, [2, 4])
+        pawn.moves = 1
+        expect(pawn.valid_moves).to eq([[2, 3]])
       end
 
       it "returns valid moves from the edge of the board" do
-        @board["a3"] = Pawn.new(:black, @board, "a3")
-        expect(@board["a3"].valid_moves).to eq(["a2", "b2"])
+        pawn = Pawn.new(:black, @board, [0, 2])
+        expect(pawn.valid_moves).to contain_exactly([0, 1], [1, 1])
       end
     end
   end
