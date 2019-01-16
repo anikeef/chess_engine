@@ -71,4 +71,8 @@ class Board
     self.set_at(from, nil)
     self.set_at(to, piece)
   end
+
+  def pieces(color)
+    @board.flatten.compact.select { |piece| piece.color == color }
+  end
 end
