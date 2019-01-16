@@ -21,7 +21,7 @@ describe Pawn do
 
       it "captures diagonally" do
         pawn = Pawn.new(:white, @board, [2, 5])
-        expect(pawn.valid_moves).to contain_exactly([2, 6], [1, 6], [3, 6])
+        expect(pawn.valid_moves).to contain_exactly([1, 6], [3, 6])
       end
 
       it "returns valid moves from the middle of the board" do
@@ -32,7 +32,7 @@ describe Pawn do
 
       it "returns valid moves from the edge of the board" do
         pawn = Pawn.new(:white, @board, [0, 5])
-        expect(pawn.valid_moves).to contain_exactly([0, 6], [1, 6])
+        expect(pawn.valid_moves).to eq([[1, 6]])
       end
     end
 
@@ -43,7 +43,7 @@ describe Pawn do
 
       it "captures diagonally" do
         pawn = Pawn.new(:black, @board, [2, 2])
-        expect(pawn.valid_moves).to contain_exactly([1, 1], [2, 1], [3, 1])
+        expect(pawn.valid_moves).to contain_exactly([1, 1], [3, 1])
       end
 
       it "returns valid moves from the middle of the board" do
@@ -54,7 +54,7 @@ describe Pawn do
 
       it "returns valid moves from the edge of the board" do
         pawn = Pawn.new(:black, @board, [0, 2])
-        expect(pawn.valid_moves).to contain_exactly([0, 1], [1, 1])
+        expect(pawn.valid_moves).to eq([[1, 1]])
       end
     end
   end

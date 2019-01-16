@@ -15,9 +15,9 @@ class Pawn < ChessPiece
 
     coordinates = relative_coordinates([0, direction])
     next_piece = @board.at(coordinates)
-    valid_moves << coordinates  if valid_move?(coordinates)
+    valid_moves << coordinates  if valid_move?(coordinates) && next_piece.nil?
     coordinates = relative_coordinates([0, direction * 2])
-    valid_moves << coordinates if @moves == 0 && valid_move?(coordinates) && next_piece.nil?
+    valid_moves << coordinates if @moves == 0 && valid_move?(coordinates) && next_piece.nil? && @board.at(coordinates).nil?
 
     valid_moves.push(*super([[-1, direction], [1, direction]]).reject { |coord| @board.at(coord).nil? })
     valid_moves
