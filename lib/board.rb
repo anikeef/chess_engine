@@ -6,6 +6,7 @@ Dir["./lib/chesspiece/*.rb"].each { |file| require file }
 class IncorrectInput < StandardError; end
 
 class Board
+  attr_reader :kings
   include ChessBoardLabels
 
   def initialize
@@ -22,6 +23,7 @@ class Board
         self[column, row2] = Pawn.new(color, self, [column, row2])
       end
     end
+    @kings = {white: self[4, 0], black: self[4, 7]}
   end
 
   def [](column, row)
