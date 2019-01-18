@@ -11,6 +11,10 @@ class ChessPiece
     @position = position
   end
 
+  def inspect
+    "#{self.class}:#{@color}:#{@position}"
+  end
+
   def valid_moves(steps)
     steps.map do |step|
        coordinates = relative_coordinates(step)
