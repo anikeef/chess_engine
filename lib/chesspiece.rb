@@ -37,13 +37,13 @@ class ChessPiece
     return false
   end
 
-  def fatal_move?(coordinates)
+  def fatal_move?(to, from = @position)
     is_fatal = false
-    piece = @board.at(coordinates)
-    @board.move_piece(@position, coordinates)
+    piece = @board.at(to)
+    @board.move_piece(from, to)
     is_fatal = true if @board.kings[@color].attacked?
-    @board.set_at(@position, self)
-    @board.set_at(coordinates, piece)
+    @board.move_piece(to, from)
+    @board.set_at(to, piece)
     is_fatal
   end
 
