@@ -24,4 +24,15 @@ describe Game do
       expect(@game.instance_variable_get(:@board)[4, 1]).to be_nil
     end
   end
+
+  describe "#play" do
+    before(:each) do
+      $stdout = StringIO.new
+    end
+
+    it "plays until the mate" do
+      allow_any_instance_of(Player).to receive(:gets).and_return("f2f3", "e7e6", "g2g4", "d8h4")
+      expect { @game.play }.to output(/.*White player got mated!$/).to_stdout
+    end
+  end
 end

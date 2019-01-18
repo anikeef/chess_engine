@@ -15,7 +15,7 @@ class Game
     chesspiece = @board.at(from)
     raise IncorrectInput, "Empty square is chosen" if chesspiece.nil?
     raise IncorrectInput, "This is not your piece" unless chesspiece.color == @current_player.color
-
+    
     valid_moves = chesspiece.valid_moves
     raise IncorrectInput, "Invalid move" unless valid_moves.include?(to)
 
