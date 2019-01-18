@@ -14,9 +14,7 @@ describe Game do
       expect { @game.make_step([2, 6], [2, 5]) }.to raise_error(IncorrectInput, "This is not your piece")
     end
 
-    it "raises an error if illegal step is made" do
-      chosen_piece = double("chosen_piece", :valid_moves => [[4, 2], [4, 3]], :color => :white)
-      @game.instance_variable_get(:@board)[4, 1] = chosen_piece
+    it "raises an error if invalid step is made" do
       expect { @game.make_step([4, 1], [4, 4]) }.to raise_error(IncorrectInput, "Invalid move")
     end
 
