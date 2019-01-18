@@ -20,6 +20,6 @@ class Pawn < ChessPiece
     valid_moves << coordinates if @moves == 0 && valid_move?(coordinates) && next_piece.nil? && @board.at(coordinates).nil?
 
     valid_moves.push(*super([[-1, direction], [1, direction]]).reject { |coord| @board.at(coord).nil? })
-    valid_moves
+    valid_moves.reject { |move| fatal_move?(move) }
   end
 end

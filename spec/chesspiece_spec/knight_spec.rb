@@ -28,5 +28,11 @@ describe Knight do
       @board[7, 2] = Knight.new(:black, @board, [7, 2])
       expect(@board[7, 2].valid_moves).to contain_exactly([6, 0], [6, 4], [5, 3], [5, 1])
     end
+
+    it "doesn't include fatal moves" do
+      @board[7, 3] = Elephant.new(:black, @board, [7, 3])
+      @board[5, 1] = Knight.new(:white, @board, [5,1])
+      expect(@board[5, 1].valid_moves).to eq([])
+    end
   end
 end

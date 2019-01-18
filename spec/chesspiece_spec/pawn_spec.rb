@@ -34,6 +34,11 @@ describe Pawn do
         pawn = Pawn.new(:white, @board, [0, 5])
         expect(pawn.valid_moves).to eq([[1, 6]])
       end
+
+      it "doesn't include fatal moves" do
+        @board[7, 3] = Elephant.new(:black, @board, [7, 3])
+        expect(@board[5, 1].valid_moves).to eq([])
+      end
     end
 
     context "black piece" do
@@ -55,6 +60,11 @@ describe Pawn do
       it "returns valid moves from the edge of the board" do
         pawn = Pawn.new(:black, @board, [0, 2])
         expect(pawn.valid_moves).to eq([[1, 1]])
+      end
+
+      it "doesn't include fatal moves" do
+        @board[7, 4] = Elephant.new(:white, @board, [7, 4])
+        expect(@board[5, 6].valid_moves).to eq([])
       end
     end
   end

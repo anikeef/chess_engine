@@ -10,7 +10,7 @@ class King < ChessPiece
   end
 
   def valid_moves(steps = MOVES)
-    super(steps)
+    super(steps).reject { |move| fatal_move?(move) }
   end
 
   def attacked?

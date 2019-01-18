@@ -10,6 +10,6 @@ class Knight < ChessPiece
   end
 
   def valid_moves
-    super(MOVES)
+    super(MOVES).reject { |move| fatal_move?(move) }
   end
 end

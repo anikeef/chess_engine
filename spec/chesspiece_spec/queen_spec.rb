@@ -22,5 +22,11 @@ describe Queen do
       @board[3, 3] = Queen.new(:white, @board, [3, 3])
       expect(@board[3, 3].valid_moves).to contain_exactly([3, 4], [3, 5], [3, 6], [3, 2], [4, 3], [5, 3], [6, 3], [7, 3], [4, 2], [4, 4], [5, 5], [6, 6], [2, 3], [1, 3], [0, 3], [2, 4], [1, 5], [0, 6], [2, 2])
     end
+
+    it "doesn't include fatal moves" do
+      @board[5, 6] = Pawn.new(:white, @board, [5, 6])
+      @board[5, 5] = Queen.new(:black, @board, [5, 5])
+      expect(@board[5, 5].valid_moves).to eq([[5, 6]])
+    end
   end
 end

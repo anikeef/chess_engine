@@ -23,7 +23,7 @@ class ChessPiece
   end
 
   def valid_moves_recursive(steps)
-    steps.inject([]) { |valid_moves, step| valid_moves.push(*repeated_step(step)) }
+    steps.inject([]) { |valid_moves, step| valid_moves.push(*repeated_step(step)) }.reject { |move| fatal_move?(move) }
   end
 
   def repeated_step(step, position = @position, valid_moves = [])

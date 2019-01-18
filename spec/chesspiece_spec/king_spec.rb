@@ -22,6 +22,14 @@ describe King do
       @board[3, 3] = King.new(:white, @board, [3, 3])
       expect(@board[3, 3].valid_moves).to contain_exactly([2, 2], [2, 3], [2, 4], [3, 2], [3, 4], [4, 2], [4, 3], [4, 4])
     end
+
+    it "doesn't include fatal moves" do
+      @board[7, 3] = Elephant.new(:black, @board, [7, 3])
+      @board[5, 1] = nil
+      @board[4, 1] = nil
+      king = King.new(:white, @board, [4, 0])
+      expect(@board[4, 0].valid_moves).to eq([[4, 1]])
+    end
   end
 
   describe "#attacked?" do
