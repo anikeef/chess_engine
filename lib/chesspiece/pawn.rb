@@ -1,12 +1,9 @@
 require "./lib/chesspiece.rb"
 
 class Pawn < ChessPiece
-  attr_accessor :moves
-
   def initialize(color, board, position)
     super
     @symbol = (@color == :black) ? "\u265F" : "\u2659"
-    @moves = 0
   end
 
   def valid_moves

@@ -48,6 +48,10 @@ describe Board do
     it "changes the position attribute of moved piece" do
       expect(@board[4, 3].position).to eq([4, 3])
     end
+
+    it "increases the moves attribute of moved piece" do
+      expect(@board[4, 3].moves).to eq(1)
+    end
   end
 
   describe "#exists_at?" do
