@@ -9,8 +9,8 @@ class King < ChessPiece
     @symbol = (@color == :black) ? "\u265A" : "\u2654"
   end
 
-  def valid_moves(steps = MOVES)
-    super(steps).reject { |move| fatal_move?(move) }
+  def valid_moves(moves = MOVES)
+    super(moves).reject { |move| fatal_move?(move) }
   end
 
   def attacked?
@@ -22,17 +22,17 @@ class King < ChessPiece
     attacks_king_recursive?(Rook, Queen)
   end
 
-  def attacks_king?(piece_class, steps)
-    steps.any? do |step|
-      coordinates = relative_coordinates(step)
+  def attacks_king?(piece_class, moves)
+    moves.any? do |move|
+      coordinates = relative_coordinates(move)
       piece = @board.exists_at?(coordinates) ? @board.at(coordinates) : nil
       !piece.nil? && piece.color != @color && piece.class == piece_class
     end
   end
 
   def attacks_king_recursive?(*classes)
-    classes[0]::MOVES.any? do |step|
-      line = repeated_step(step)
+    classes[0]::MOVES.any? do |move|
+      line = repeated_move(move)
       piece = line.empty? ? nil : @board.at(line.last)
       !piece.nil? && piece.color != @color && classes.include?(piece.class)
     end

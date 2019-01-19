@@ -6,25 +6,25 @@ describe Player do
     @player = Player.new(:white)
   end
 
-  describe "#input_step" do
+  describe "#input_move" do
     it "raises error if the input is invalid" do
       allow(@player).to receive(:gets).and_return("a0b1")
-      expect { @player.input_step }.to raise_error(IncorrectInput)
+      expect { @player.input_move }.to raise_error(IncorrectInput)
     end
 
     it "returns proper arrays for correct inputs" do
       allow(@player).to receive(:gets).and_return("e2e4")
-      expect(@player.input_step).to eq([[4, 1], [4, 3]])
+      expect(@player.input_move).to eq([[4, 1], [4, 3]])
     end
 
     it "reads inputs with space characters" do
       allow(@player).to receive(:gets).and_return(" a1   h8 ")
-      expect(@player.input_step).to eq([[0, 0], [7, 7]])
+      expect(@player.input_move).to eq([[0, 0], [7, 7]])
     end
 
     it "throws :exit for proper input" do
       allow(@player).to receive(:gets).and_return(" Exit ")
-      expect { @player.input_step }.to throw_symbol(:exit)
+      expect { @player.input_move }.to throw_symbol(:exit)
     end
   end
 

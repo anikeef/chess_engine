@@ -16,22 +16,22 @@ class ChessPiece
     "#{self.class}:#{@color}:#{@position}"
   end
 
-  def valid_moves(steps)
-    steps.map do |step|
-       coordinates = relative_coordinates(step)
+  def valid_moves(moves)
+    moves.map do |move|
+       coordinates = relative_coordinates(move)
        coordinates if valid_move?(coordinates)
      end.compact
   end
 
-  def valid_moves_recursive(steps)
-    steps.inject([]) { |valid_moves, step| valid_moves.push(*repeated_step(step)) }.reject { |move| fatal_move?(move) }
+  def valid_moves_recursive(moves)
+    moves.inject([]) { |valid_moves, move| valid_moves.push(*repeated_move(move)) }.reject { |move| fatal_move?(move) }
   end
 
-  def repeated_step(step, position = @position, valid_moves = [])
-    coordinates = relative_coordinates(step, position)
+  def repeated_move(move, position = @position, valid_moves = [])
+    coordinates = relative_coordinates(move, position)
     return valid_moves unless valid_move?(coordinates)
     return valid_moves << coordinates unless @board.at(coordinates).nil?
-    repeated_step(step, coordinates, valid_moves << coordinates)
+    repeated_move(move, coordinates, valid_moves << coordinates)
   end
 
   def valid_move?(coordinates)
@@ -52,7 +52,7 @@ class ChessPiece
     is_fatal
   end
 
-  def relative_coordinates(step, position = @position)
-    [position[0] + step[0], position[1] + step[1]]
+  def relative_coordinates(move, position = @position)
+    [position[0] + move[0], position[1] + move[1]]
   end
 end

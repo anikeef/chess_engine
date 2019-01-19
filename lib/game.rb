@@ -12,7 +12,7 @@ class Game
     @last_piece = nil
   end
 
-  def make_step(from, to)
+  def make_move(from, to)
     return castling(from.size) if to == :castling
     piece = @board.at(from)
     raise IncorrectInput, "Empty square is chosen" if piece.nil?
@@ -34,7 +34,7 @@ class Game
         puts "\n#{@board}"
         declare_check if check?
         begin
-          make_step(*@current_player.input_step)
+          make_move(*@current_player.input_move)
         rescue IncorrectInput => e
           puts "#{e.message}. Try again"
           retry

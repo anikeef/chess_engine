@@ -5,21 +5,21 @@ describe Game do
     @game = Game.new
   end
 
-  describe "#make_step" do
+  describe "#make_move" do
     it "raises an error if the empty square is chosen" do
-      expect { @game.make_step([4, 2], [4, 3]) }.to raise_error(IncorrectInput, "Empty square is chosen")
+      expect { @game.make_move([4, 2], [4, 3]) }.to raise_error(IncorrectInput, "Empty square is chosen")
     end
 
     it "raises an error if a player choses not his own piece" do
-      expect { @game.make_step([2, 6], [2, 5]) }.to raise_error(IncorrectInput, "This is not your piece")
+      expect { @game.make_move([2, 6], [2, 5]) }.to raise_error(IncorrectInput, "This is not your piece")
     end
 
-    it "raises an error if invalid step is made" do
-      expect { @game.make_step([4, 1], [4, 4]) }.to raise_error(IncorrectInput, "Invalid move")
+    it "raises an error if invalid move is made" do
+      expect { @game.make_move([4, 1], [4, 4]) }.to raise_error(IncorrectInput, "Invalid move")
     end
 
-    it "makes correct steps" do
-      @game.make_step([4, 1], [4, 3])
+    it "makes correct moves" do
+      @game.make_move([4, 1], [4, 3])
       expect(@game.instance_variable_get(:@board)[4, 3]).to be_a(Pawn)
       expect(@game.instance_variable_get(:@board)[4, 1]).to be_nil
     end

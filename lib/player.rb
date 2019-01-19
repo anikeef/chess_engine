@@ -9,7 +9,7 @@ class Player
     @color = color
   end
 
-  def input_step
+  def input_move
     print "#{@color.to_s.capitalize}'s move (e. g. \"e2e4\" or \"exit\"): "
     input = gets.gsub(/\s+/, "")
     throw :exit if /^exit$/i.match?(input)
