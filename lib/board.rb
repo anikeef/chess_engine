@@ -72,10 +72,7 @@ class Board
     piece = self.at(from)
     self.set_at(from, nil)
     self.set_at(to, piece)
-    unless piece.nil?
-      piece.position = to
-      piece.moves += 1
-    end
+    piece.position = to unless piece.nil?
   end
 
   def pieces(color)
