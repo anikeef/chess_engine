@@ -34,5 +34,18 @@ describe Game do
       allow_any_instance_of(Player).to receive(:gets).and_return("f2f3", "e7e6", "g2g4", "d8h4")
       expect { @game.play }.to output(/.*White player got mated!$/).to_stdout
     end
+
+    it "plays with the en passant" do
+      allow_any_instance_of(Player).to receive(:gets).and_return("e2e4", "a7a6", "e4e5", "f7f5", "e5f6", "exit")
+      @game.play
+      expect(@game.instance_variable_get(:@board)[5, 5]).to be_a(Pawn)
+      expect(@game.instance_variable_get(:@board)[5, 4]).to be_nil
+    end
+
+    it "plays with the promotion" do
+      allow_any_instance_of(Player).to receive(:gets).and_return("g2g4", "h7h5", "g1f3", "h5g4", "h2h4", "g4g3", "f1h3", "g3g2", "h1h2", "g2g1", "1", "exit")
+      @game.play
+      expect(@game.instance_variable_get(:@board)[6, 0]).to be_a(Queen)
+    end
   end
 end
