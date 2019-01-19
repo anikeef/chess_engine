@@ -47,5 +47,14 @@ describe Game do
       @game.play
       expect(@game.instance_variable_get(:@board)[6, 0]).to be_a(Queen)
     end
+
+    it "plays with the castling" do
+      allow_any_instance_of(Player).to receive(:gets).and_return("g1f3", "b8a6", "g2g3", "b7b6", "f1g2", "c8b7", "h2h3", "c7c6", "00", "d8c7", "h3h4", "ooo", "exit")
+      @game.play
+      expect(@game.instance_variable_get(:@board)[6, 0]).to be_a(King)
+      expect(@game.instance_variable_get(:@board)[5, 0]).to be_a(Rook)
+      expect(@game.instance_variable_get(:@board)[2, 7]).to be_a(King)
+      expect(@game.instance_variable_get(:@board)[3, 7]).to be_a(Rook)
+    end
   end
 end
