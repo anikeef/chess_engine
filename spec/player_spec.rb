@@ -21,6 +21,11 @@ describe Player do
       allow(@player).to receive(:gets).and_return(" a1   h8 ")
       expect(@player.input_step).to eq([[0, 0], [7, 7]])
     end
+
+    it "throws :exit for proper input" do
+      allow(@player).to receive(:gets).and_return(" Exit ")
+      expect { @player.input_step }.to throw_symbol(:exit)
+    end
   end
 
   describe "#input_promotion" do
