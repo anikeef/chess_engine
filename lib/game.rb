@@ -16,10 +16,7 @@ class Game
     piece = @board.at(from)
     raise IncorrectInput, "Empty square is chosen" if piece.nil?
     raise IncorrectInput, "This is not your piece" unless piece.color == @current_player.color
-
-    if piece.class == Pawn && to == piece.en_passant_coordinates(@last_piece)
-      @board.set_at([to[0], to[1] - piece.direction], nil)
-    else
+    unless en_passant(piece, to)
       valid_moves = piece.valid_moves
       raise IncorrectInput, "Invalid move" unless valid_moves.include?(to)
     end
@@ -27,12 +24,20 @@ class Game
     @board.move_piece(from, to)
     @last_piece = piece
     piece.moves += 1
+
+  def en_passant(moving_piece, target_coord)
+    if moving_piece.class == Pawn && target_coord == moving_piece.en_passant_coordinates(@last_piece)
+      @board.set_at([target_coord[0], target_coord[1] - moving_piece.direction], nil)
+      return true
+    end
+    false
+  end
+
   end
 
   def play
     until stalemate?
-      puts
-      puts @board
+      puts "\n#{@board}"
       declare_check if check?
       begin
         make_step(*@current_player.input_step)
