@@ -88,13 +88,13 @@ class Game
   def game_over
     puts @board
     if check?
-      declare_mate
+      declare_checkmate
     else
       puts "Stalemate!"
     end
   end
 
-  def declare_mate
+  def declare_checkmate
     puts "#{@current_player.color.to_s.capitalize} player got mated!"
   end
 

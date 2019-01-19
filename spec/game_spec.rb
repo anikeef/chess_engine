@@ -30,7 +30,7 @@ describe Game do
       $stdout = StringIO.new
     end
 
-    it "plays until the mate" do
+    it "plays until the checkmate" do
       allow_any_instance_of(Player).to receive(:gets).and_return("f2f3", "e7e6", "g2g4", "d8h4")
       expect { @game.play }.to output(/.*White player got mated!$/).to_stdout
     end
