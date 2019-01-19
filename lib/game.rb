@@ -24,6 +24,8 @@ class Game
     @board.move_piece(from, to)
     @last_piece = piece
     piece.moves += 1
+    promote_pawn(piece) if piece.class == Pawn && to[1] == 7
+  end
 
   def en_passant(moving_piece, target_coord)
     if moving_piece.class == Pawn && target_coord == moving_piece.en_passant_coordinates(@last_piece)
@@ -33,6 +35,9 @@ class Game
     false
   end
 
+  def promote_pawn(pawn)
+    piece_classes = [Queen, Rook, Knight, Elephant]
+    @board.set_at(pawn.position, piece_classes[@current_player.input_promotion - 1].new(@current_player.color, @board, pawn.position))
   end
 
   def play

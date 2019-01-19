@@ -16,4 +16,11 @@ class Player
     [[COLUMN_LETTERS.find_index(input[0]), input[1].to_i - 1],
     [COLUMN_LETTERS.find_index(input[2]), input[3].to_i - 1]]
   end
+
+  def input_promotion
+    puts "Pawn promotion. Choose the new piece:\n1. Queen\n2. Rook\n3. Knight\n4. Elephant"
+    input = gets.strip
+    raise IncorrectInput, "Input must be a single digit" unless /^[1-4]$/.match?(input)
+    input.to_i
+  end
 end

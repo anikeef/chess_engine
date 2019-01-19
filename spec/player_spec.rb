@@ -22,4 +22,16 @@ describe Player do
       expect(@player.input_step).to eq([[0, 0], [7, 7]])
     end
   end
+
+  describe "#input_promotion" do
+    it "raises error if the input is not between 1 and 4" do
+      allow(@player).to receive(:gets).and_return("5")
+      expect { @player.input_promotion }.to raise_error(IncorrectInput)
+    end
+
+    it "returns a number" do
+      allow(@player).to receive(:gets).and_return(" 2  ")
+      expect(@player.input_promotion).to eq(2)
+    end
+  end
 end
