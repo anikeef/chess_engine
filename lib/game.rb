@@ -9,22 +9,29 @@ class Game
     @players = [Player.new(:white), Player.new(:black)]
     @players_cycle = @players.cycle
     @current_player = @players_cycle.next
+    @last_piece = nil
   end
 
   def make_step(from, to)
-    chesspiece = @board.at(from)
-    raise IncorrectInput, "Empty square is chosen" if chesspiece.nil?
-    raise IncorrectInput, "This is not your piece" unless chesspiece.color == @current_player.color
-    
-    valid_moves = chesspiece.valid_moves
-    raise IncorrectInput, "Invalid move" unless valid_moves.include?(to)
+    piece = @board.at(from)
+    raise IncorrectInput, "Empty square is chosen" if piece.nil?
+    raise IncorrectInput, "This is not your piece" unless piece.color == @current_player.color
+
+    if piece.class == Pawn && to == piece.en_passant_coordinates(@last_piece)
+      @board.set_at([to[0], to[1] - piece.direction], nil)
+    else
+      valid_moves = piece.valid_moves
+      raise IncorrectInput, "Invalid move" unless valid_moves.include?(to)
+    end
 
     @board.move_piece(from, to)
+    @last_piece = piece
+    piece.moves += 1
   end
 
   def play
     until stalemate?
-      puts "\n"
+      puts
       puts @board
       declare_check if check?
       begin
