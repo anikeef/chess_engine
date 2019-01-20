@@ -1,15 +1,17 @@
 require "./lib/board.rb"
 require "./lib/player.rb"
+Dir["./lib/chesspiece/*.rb"].each { |file| require file }
 
 class Game
+  attr_accessor :filename
 
   def initialize
     @board = Board.new
     @board.set_default
     @players = [Player.new(:white), Player.new(:black)]
-    @players_cycle = @players.cycle
-    @current_player = @players_cycle.next
+    @current_player = @players[0]
     @last_piece = nil
+    @filename = nil
   end
 
   def make_move(from, to)
@@ -29,9 +31,8 @@ class Game
   end
 
   def play
-    catch(:exit) do
       until stalemate?
-        puts "\n#{@board}"
+        puts "\n#{@filename}\n#{@board}"
         declare_check if check?
         begin
           make_move(*@current_player.input_move)
@@ -39,10 +40,9 @@ class Game
           puts "#{e.message}. Try again"
           retry
         end
-        @current_player = @players_cycle.next
+        @current_player = @current_player == @players[0] ? @players[1] : @players[0]
       end
       game_over
-    end
   end
 
   def en_passant(moving_piece, target_coord)

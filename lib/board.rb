@@ -1,13 +1,11 @@
 require "./lib/chesspiece.rb"
 require "colorize"
-require "./lib/chess_board_labels.rb"
 Dir["./lib/chesspiece/*.rb"].each { |file| require file }
 
 class IncorrectInput < StandardError; end
 
 class Board
   attr_reader :kings
-  include ChessBoardLabels
 
   def initialize
     @board = Array.new(8) { Array.new(8) { nil } }

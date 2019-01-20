@@ -1,9 +1,6 @@
-require "./lib/chess_board_labels.rb"
-
 class ChessPiece
   attr_reader :symbol, :color
   attr_accessor :position, :moves
-  include ChessBoardLabels
 
   def initialize(color, board, position)
     @color = color
