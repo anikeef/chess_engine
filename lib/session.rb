@@ -13,10 +13,8 @@ class Session
       puts "#{e.message}. Try again"
       retry
     end
-    
-    catch(:exit) do
-      @game.play
-    end
+
+    @game.play
     save if save?
   end
 

@@ -31,6 +31,7 @@ class Game
   end
 
   def play
+    catch(:exit) do
       until stalemate?
         puts "\n#{@filename}\n#{@board}"
         declare_check if check?
@@ -43,6 +44,7 @@ class Game
         @current_player = @current_player == @players[0] ? @players[1] : @players[0]
       end
       game_over
+    end
   end
 
   def en_passant(moving_piece, target_coord)
