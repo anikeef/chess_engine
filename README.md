@@ -1,9 +1,9 @@
 # Command Line Chess
 This is my final Ruby project before moving to Rails framework. In this PvP game I've tried to apply all the stuff I have learned to this moment.
 
-###Features:
+### Features:
 * It works
-* You can make all the moves that are legal, including:
+* You can make all the legal moves, including:
   * Castling
   * En passant
   * Pawn promotion
@@ -20,6 +20,7 @@ Here are the steps you need to make to play this game:
 3. Type `ruby lib/session.rb` in your command line
 
 ## How to play
-* Trivial moves are made by typing in something like "e2e4" or "e3 f5" or even " a 1 b 3 " (whitespace doesn't matter)
-* Castling is done by typing in "00", "oo" or "OO"
+* Trivial moves are made by typing in something like "e2e4" or `e3 f5` or even ` a 1 b 3 ` (whitespace doesn't matter)
+* Short castling is done by typing in `00`, `oo` or `OO`
+* Long castling is done by typing in `000`, `ooo` or `OOO`
 * To quit the game, type in "exit". You will be asked to save the game
