@@ -1,4 +1,4 @@
-require "./lib/chesspiece/queen.rb"
+require "./lib/pieces/queen.rb"
 
 describe Queen do
   describe "#initialize" do

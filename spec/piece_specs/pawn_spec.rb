@@ -1,4 +1,4 @@
-require "./lib/chesspiece/pawn.rb"
+require "./lib/pieces/pawn.rb"
 
 describe Pawn do
   before(:each) do

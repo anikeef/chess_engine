@@ -1,6 +1,6 @@
 require "./lib/chesspiece.rb"
 require "colorize"
-Dir["./lib/chesspiece/*.rb"].each { |file| require file }
+Dir["./lib/pieces/*.rb"].each { |file| require file }
 
 class IncorrectInput < StandardError; end
 

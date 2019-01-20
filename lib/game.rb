@@ -1,6 +1,6 @@
 require "./lib/board.rb"
 require "./lib/player.rb"
-Dir["./lib/chesspiece/*.rb"].each { |file| require file }
+Dir["./lib/pieces/*.rb"].each { |file| require file }
 
 class Game
   attr_accessor :filename

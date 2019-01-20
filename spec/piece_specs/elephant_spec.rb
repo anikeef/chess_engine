@@ -1,4 +1,4 @@
-require "./lib/chesspiece/elephant.rb"
+require "./lib/pieces/elephant.rb"
 
 describe Elephant do
   describe "#initialize" do
