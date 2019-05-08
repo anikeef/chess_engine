@@ -3,7 +3,7 @@ require "./lib/player.rb"
 Dir["./lib/pieces/*.rb"].each { |file| require file }
 
 class Game
-  attr_accessor :filename
+  attr_accessor :filename, :board, :current_player
 
   def initialize
     @board = Board.new
@@ -28,23 +28,6 @@ class Game
     @last_piece = piece
     piece.moves += 1
     promotion(piece) if piece.class == Pawn && [7, 0].include?(to[1])
-  end
-
-  def play
-    catch(:exit) do
-      until stalemate?
-        puts "\n#{@filename}\n#{@board}"
-        declare_check if check?
-        begin
-          make_move(*@current_player.input_move)
-        rescue IncorrectInput => e
-          puts "#{e.message}. Try again"
-          retry
-        end
-        @current_player = @current_player == @players[0] ? @players[1] : @players[0]
-      end
-      game_over
-    end
   end
 
   def en_passant(moving_piece, target_coord)
@@ -85,22 +68,5 @@ class Game
 
   def stalemate?
     @board.pieces(@current_player.color).all? { |piece| piece.valid_moves.empty? }
-  end
-
-  def game_over
-    puts @board
-    if check?
-      declare_checkmate
-    else
-      puts "Stalemate!"
-    end
-  end
-
-  def declare_checkmate
-    puts "#{@current_player.color.to_s.capitalize} player got mated!"
-  end
-
-  def declare_check
-    puts "#{@current_player.color.to_s.capitalize} player is given a check"
   end
 end
