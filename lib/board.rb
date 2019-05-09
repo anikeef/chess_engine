@@ -1,5 +1,8 @@
 require "./lib/chesspiece.rb"
 require "colorize"
+require "pry"
+require "rb-readline"
+
 Dir["./lib/pieces/*.rb"].each { |file| require file }
 
 class IncorrectInput < StandardError; end
@@ -14,14 +17,14 @@ class Board
   def set_default
     [[:white, 0, 1], [:black, 7, 6]].each do |color, row1, row2|
       [Rook, Knight, Elephant, Queen, King, Elephant, Knight, Rook].each.with_index do |piece, column|
-        self[column, row1] = piece.new(color, self, [column, row1])
+        self[column, row1] = piece.new(color)
       end
 
       0.upto(7) do |column|
-        self[column, row2] = Pawn.new(color, self, [column, row2])
+        self[column, row2] = Pawn.new(color)
       end
     end
-    @kings = {white: self[4, 0], black: self[4, 7]}
+    @kings = {white: [4, 0], black: [4, 7]}
   end
 
   def [](column, row)
@@ -70,10 +73,25 @@ class Board
     piece = self.at(from)
     self.set_at(from, nil)
     self.set_at(to, piece)
-    piece.position = to unless piece.nil?
   end
 
   def pieces(color)
     @board.flatten.compact.select { |piece| piece.color == color }
+  end
+
+  def coordinates_list
+    list = []
+    (0..7).each do |x|
+      (0..7).each { |y| list << [x, y]}
+    end
+    list
+  end
+
+  def piece_coordinates(color)
+    coordinates_list.select do |coord|
+      #binding.pry
+      piece = at(coord)
+      !piece.nil? && piece.color == color
+    end
   end
 end

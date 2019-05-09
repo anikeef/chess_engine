@@ -1,9 +1,11 @@
 require "./lib/board.rb"
 require "./lib/player.rb"
+require "./lib/validator.rb"
 Dir["./lib/pieces/*.rb"].each { |file| require file }
 
 class Game
   attr_accessor :filename, :board, :current_player
+  include MoveValidator
 
   def initialize
     @board = Board.new
@@ -20,7 +22,7 @@ class Game
     raise IncorrectInput, "Empty square is chosen" if piece.nil?
     raise IncorrectInput, "This is not your piece" unless piece.color == @current_player.color
     unless en_passant(piece, to)
-      valid_moves = piece.valid_moves
+      valid_moves = valid_moves(piece, from)
       raise IncorrectInput, "Invalid move" unless valid_moves.include?(to)
     end
 
@@ -62,11 +64,20 @@ class Game
     end
   end
 
-  def check?
-    @board.kings[@current_player.color].attacked?
+  def stalemate?
+    @board.piece_coordinates(@current_player.color).all? do |coord|
+      valid_moves(coord).empty?
+    end
   end
 
-  def stalemate?
-    @board.pieces(@current_player.color).all? { |piece| piece.valid_moves.empty? }
+  def next_player
+    @current_player = @current_player == @players[0] ? @players[1] : @players[0]
+  end
+
+  def check?
+    opposite_color = @current_player.color == :black ? :white : :black
+    @board.piece_coordinates(opposite_color).any? do |coord|
+      possible_moves(coord).include? @board.kings[@current_player.color]
+    end
   end
 end

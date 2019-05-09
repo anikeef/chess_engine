@@ -5,7 +5,7 @@ require "yaml"
 class ChessCLI
   include Input
 
-  def initializes
+  def initialize
     begin
       mode = get_input("\nChoose the game mode:\n1. New game\n2. Continue\nEnter your choice (1 or 2): ", /^[12]$/)
       @game = mode == "1" ? Game.new : choose_game
@@ -29,7 +29,7 @@ class ChessCLI
           puts "#{e.message}. Try again"
           retry
         end
-        @game.current_player = @game.current_player == @players[0] ? @players[1] : @players[0]
+        @game.next_player
       end
       game_over
     end

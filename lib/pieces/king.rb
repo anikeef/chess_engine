@@ -1,16 +1,14 @@
 require "./lib/chesspiece.rb"
 
 class King < ChessPiece
-  MOVES = [[0, 1], [0, -1], [1, 0], [-1, 0],
-          [1, 1], [1, -1], [-1, 1], [-1, -1]]
-
-  def initialize(color, board, position)
+  def initialize(color)
     super
     @symbol = (@color == :black) ? "\u265A" : "\u2654"
   end
-
-  def valid_moves(moves = MOVES)
-    super(moves).reject { |move| fatal_move?(move) }
+  
+  def moves
+    [[0, 1], [0, -1], [1, 0], [-1, 0],
+    [1, 1], [1, -1], [-1, 1], [-1, -1]]
   end
 
   def attacked?

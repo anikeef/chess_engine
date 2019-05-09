@@ -1,14 +1,12 @@
 require "./lib/chesspiece.rb"
 
 class Rook < ChessPiece
-  MOVES = [[0, 1], [0, -1], [1, 0], [-1, 0]]
-
-  def initialize(color, board, position)
+  def initialize(color)
     super
     @symbol = (@color == :black) ? "\u265C" : "\u2656"
   end
 
-  def valid_moves
-    valid_moves_recursive(MOVES)
+  def moves
+    [[1, 0], [0, 1]]
   end
 end
