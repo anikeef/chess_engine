@@ -82,4 +82,18 @@ module MoveValidator
                    end
     possible_moves.push(*take_coords)
   end
+
+  def en_passant_coords(from)
+    return [] unless from[1].between?(3, 4) &&
+                  @last_piece.class == Pawn &&
+                  @last_piece.moves_count == 1
+    piece_coords = [relative_coordinates(from, [1, 0]),
+                    relative_coordinates(from, [-1, 0])].find do |coord|
+      @board.at(coord) == @last_piece
+    end
+    return [] if piece_coords.nil?
+
+    move_coords = [piece_coords[0], piece_coords[1] + direction]
+    move_coords unless fatal_en_passant?(last_piece, move_coordinates)
+  end
 end
