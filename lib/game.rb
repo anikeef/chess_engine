@@ -1,6 +1,7 @@
 require "./lib/board.rb"
 require "./lib/player.rb"
 require "./lib/validator.rb"
+require "./lib/move.rb"
 Dir["./lib/pieces/*.rb"].each { |file| require file }
 
 class Game
@@ -16,31 +17,31 @@ class Game
     @filename = nil
   end
 
+  # def move(from, to)
+  #   move = Move.new(@board, from, to)
+  #   move.commit
+  #   if check?
+  #     move.rollback
+  #     raise IncorrectInput, "Fatal move"
+  #   end
+  # end
+
   def make_move(from, to)
-    return castling(from.size) if to == :castling
     piece = @board.at(from)
     raise IncorrectInput, "Empty square is chosen" if piece.nil?
     raise IncorrectInput, "This is not your piece" unless piece.color == @current_player.color
-    unless en_passant(from, to)
-      valid_moves = valid_moves(from)
-      raise IncorrectInput, "Invalid move" unless valid_moves.include?(to)
-      @board.move_piece(from, to)
+    raise IncorrectInput, "Invalid move" unless possible_moves(from).include?(to)
+    move = Move.new(@board, from, to)
+    move.commit
+    if check?
+      move.rollback
+      raise IncorrectInput, "Fatal move"
     end
 
     @last_piece = piece
     piece.moves_count += 1
     promotion(piece) if piece.class == Pawn && [7, 0].include?(to[1])
     next_player
-  end
-
-  def en_passant(from, to)
-    moving_piece = @board.at(from)
-    if moving_piece.class == Pawn && to == en_passant_coords(from)
-      @board.set_at([to[0], to[1] - moving_piece.direction], nil)
-      @board.move_piece(from, to)
-      return true
-    end
-    false
   end
 
   def promotion(pawn)

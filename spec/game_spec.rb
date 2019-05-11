@@ -23,6 +23,18 @@ describe Game do
       expect(@game.board[4, 3]).to be_a(Pawn)
       expect(@game.board[4, 1]).to be_nil
     end
+
+    it "makes en passant" do
+      @game.make_move([0, 1], [0, 3])
+      @game.make_move([7, 6], [7, 4])
+      @game.make_move([0, 3], [0, 4])
+      @game.make_move([1, 6], [1, 4])
+      @game.make_move([0, 4], [1, 5])
+      expect(@game.board[0, 4]).to be_nil
+      expect(@game.board[1, 4]).to be_nil
+      expect(@game.board[1, 5]).to be_a(Pawn)
+      expect(@game.board[1, 5].color).to eq(:white)
+    end
   end
 
 

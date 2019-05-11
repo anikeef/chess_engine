@@ -29,7 +29,6 @@ class ChessCLI
           puts "#{e.message}. Try again"
           retry
         end
-        @game.next_player
       end
       game_over
     end

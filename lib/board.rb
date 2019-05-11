@@ -79,7 +79,7 @@ class Board
     @board.flatten.compact.select { |piece| piece.color == color }
   end
 
-  def coordinates_list
+  def Board.coordinates_list
     list = []
     (0..7).each do |x|
       (0..7).each { |y| list << [x, y]}
@@ -88,8 +88,7 @@ class Board
   end
 
   def piece_coordinates(color)
-    coordinates_list.select do |coord|
-      #binding.pry
+    Board.coordinates_list.select do |coord|
       piece = at(coord)
       !piece.nil? && piece.color == color
     end
