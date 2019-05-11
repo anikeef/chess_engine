@@ -18,6 +18,12 @@ describe Game do
       expect { @game.move([4, 1], [4, 4]) }.to raise_error(IncorrectInput, "Invalid move")
     end
 
+    it "raises an error if the move is fatal" do
+      @game.board.set_at([7, 3], Queen.new(:black))
+      expect { @game.move([5, 1], [5, 2]) }.to raise_error(IncorrectInput, "Fatal move")
+      puts @game.board
+    end
+
     it "makes correct moves" do
       @game.move([4, 1], [4, 3])
       expect(@game.board[4, 3]).to be_a(Pawn)

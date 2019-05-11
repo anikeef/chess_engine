@@ -24,7 +24,7 @@ class Game
     raise IncorrectInput, "Invalid move" unless valid_moves(from).include?(to)
     move = Move.new(@board, from, to)
     move.commit
-    if check?
+    if king_attacked?
       move.rollback
       raise IncorrectInput, "Fatal move"
     end
@@ -74,5 +74,26 @@ class Game
     @board.piece_coordinates(opposite_color).any? do |coord|
       valid_moves(coord).include? @board.kings[@current_player.color]
     end
+  end
+
+  def king_attacked?
+    king_coords = @board.kings[@current_player.color]
+    [[1, 1], [-1, 1], [-1, -1], [1, -1]].each do |move|
+      edge_coords = repeated_move(king_coords, move).last
+      piece = edge_coords.nil? ? nil : @board.at(edge_coords)
+      return true if !piece.nil? && piece.beats_diagonally?
+    end
+    [[1, 0], [-1, 0], [0, 1], [0, -1]].each do |move|
+      edge_coords = repeated_move(king_coords, move).last
+      piece = edge_coords.nil? ? nil : @board.at(edge_coords)
+      return true if !piece.nil? && piece.beats_straight?
+    end
+    [[1, 2], [2, 1], [1, -2], [-2, 1],
+    [-1, 2], [2, -1], [-1, -2], [-2, -1]].each do |move|
+      coords = relative_coords(king_coords, move)
+      piece = valid_move?(coords) ? @board.at(coords) : nil
+      return true if !piece.nil? && piece.knight?
+    end
+    false
   end
 end
