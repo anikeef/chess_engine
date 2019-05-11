@@ -5,31 +5,31 @@ describe Game do
     @game = Game.new
   end
 
-  describe "#make_move" do
+  describe "#move" do
     it "raises an error if the empty square is chosen" do
-      expect { @game.make_move([4, 2], [4, 3]) }.to raise_error(IncorrectInput, "Empty square is chosen")
+      expect { @game.move([4, 2], [4, 3]) }.to raise_error(IncorrectInput, "Empty square is chosen")
     end
 
     it "raises an error if a player choses not his own piece" do
-      expect { @game.make_move([2, 6], [2, 5]) }.to raise_error(IncorrectInput, "This is not your piece")
+      expect { @game.move([2, 6], [2, 5]) }.to raise_error(IncorrectInput, "This is not your piece")
     end
 
     it "raises an error if invalid move is made" do
-      expect { @game.make_move([4, 1], [4, 4]) }.to raise_error(IncorrectInput, "Invalid move")
+      expect { @game.move([4, 1], [4, 4]) }.to raise_error(IncorrectInput, "Invalid move")
     end
 
     it "makes correct moves" do
-      @game.make_move([4, 1], [4, 3])
+      @game.move([4, 1], [4, 3])
       expect(@game.board[4, 3]).to be_a(Pawn)
       expect(@game.board[4, 1]).to be_nil
     end
 
     it "makes en passant" do
-      @game.make_move([0, 1], [0, 3])
-      @game.make_move([7, 6], [7, 4])
-      @game.make_move([0, 3], [0, 4])
-      @game.make_move([1, 6], [1, 4])
-      @game.make_move([0, 4], [1, 5])
+      @game.move([0, 1], [0, 3])
+      @game.move([7, 6], [7, 4])
+      @game.move([0, 3], [0, 4])
+      @game.move([1, 6], [1, 4])
+      @game.move([0, 4], [1, 5])
       expect(@game.board[0, 4]).to be_nil
       expect(@game.board[1, 4]).to be_nil
       expect(@game.board[1, 5]).to be_a(Pawn)
@@ -38,23 +38,17 @@ describe Game do
   end
 
 
-  # describe "#play" do
-  #   before(:each) do
-  #     $stdout = StringIO.new
-  #   end
-  #
-  #   it "plays until the checkmate" do
-  #     allow_any_instance_of(Player).to receive(:gets).and_return("f2f3", "e7e6", "g2g4", "d8h4")
-  #     expect { @game.play }.to output(/.*White player got mated!$/).to_stdout
-  #   end
-  #
-  #   it "plays with the en passant" do
-  #     allow_any_instance_of(Player).to receive(:gets).and_return("e2e4", "a7a6", "e4e5", "f7f5", "e5f6", "exit")
-  #     @game.play
-  #     expect(@game.instance_variable_get(:@board)[5, 5]).to be_a(Pawn)
-  #     expect(@game.instance_variable_get(:@board)[5, 4]).to be_nil
-  #   end
-  #
+  describe "#play" do
+    it "plays until the checkmate" do
+      # f2f3, e7e6, g2g4, d8h4
+      @game.move([5, 1], [5, 2])
+      @game.move([4, 6], [4, 5])
+      @game.move([6, 1], [6, 3])
+      @game.move([3, 7], [7, 3])
+      expect @game.over?
+    end
+  end
+
   #   it "plays with the promotion" do
   #     allow_any_instance_of(Player).to receive(:gets).and_return("g2g4", "h7h5", "g1f3", "h5g4", "h2h4", "g4g3", "f1h3", "g3g2", "h1h2", "g2g1", "1", "exit")
   #     @game.play

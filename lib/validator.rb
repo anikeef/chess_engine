@@ -1,41 +1,41 @@
 module MoveValidator
-  def valid_moves(from)
-    possible_moves(from).reject { |move| fatal_move?(from, move) }
+  def safe_moves(from)
+    valid_moves(from).reject { |move| fatal_move?(from, move) }
   end
 
-  def possible_moves(from)
+  def valid_moves(from)
     piece = @board.at(from)
     if [King, Knight].include?(piece.class)
       piece.moves.map do |move|
         to = relative_coords(from, move)
-        to if possible_move?(to)
+        to if valid_move?(to)
       end.compact
     elsif piece.class == Pawn
-      pawn_possible_moves(from)
+      pawn_valid_moves(from)
     else
-      possible_moves_recursive(from)
+      valid_moves_recursive(from)
     end
   end
 
-  def possible_moves_recursive(from)
+  def valid_moves_recursive(from)
     piece = @board.at(from)
-    piece.moves.inject([]) do |possible_moves, move|
-      possible_moves.push(*repeated_move(from, move))
+    piece.moves.inject([]) do |valid_moves, move|
+      valid_moves.push(*repeated_move(from, move))
     end
   end
 
-  def repeated_move(from, move, possible_moves = [])
+  def repeated_move(from, move, valid_moves = [])
     coordinates = relative_coords(from, move)
-    return possible_moves unless possible_move?(coordinates)
-    return possible_moves << coordinates unless @board.at(coordinates).nil?
-    repeated_move(move, coordinates, possible_moves << coordinates)
+    return valid_moves unless valid_move?(coordinates)
+    return valid_moves << coordinates unless @board.at(coordinates).nil?
+    repeated_move(coordinates, move, valid_moves << coordinates)
   end
 
   def relative_coords(from, move)
     [from[0] + move[0], from[1] + move[1]]
   end
 
-  def possible_move?(coordinates)
+  def valid_move?(coordinates)
     if @board.exists_at?(coordinates)
       piece = @board.at(coordinates)
       return (piece.nil? || piece.color != @current_player.color)
@@ -52,7 +52,7 @@ module MoveValidator
     is_fatal
   end
 
-  def pawn_possible_moves(from)
+  def pawn_valid_moves(from)
     pawn = @board.at(from)
     direction = pawn.direction
     moves = []

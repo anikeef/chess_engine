@@ -1,6 +1,6 @@
 class ChessPiece
   attr_reader :symbol, :color
-  attr_accessor :position, :moves_count
+  attr_accessor :moves_count
 
   def initialize(color)
     @color = color

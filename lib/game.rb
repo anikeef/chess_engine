@@ -17,20 +17,11 @@ class Game
     @filename = nil
   end
 
-  # def move(from, to)
-  #   move = Move.new(@board, from, to)
-  #   move.commit
-  #   if check?
-  #     move.rollback
-  #     raise IncorrectInput, "Fatal move"
-  #   end
-  # end
-
-  def make_move(from, to)
+  def move(from, to)
     piece = @board.at(from)
     raise IncorrectInput, "Empty square is chosen" if piece.nil?
     raise IncorrectInput, "This is not your piece" unless piece.color == @current_player.color
-    raise IncorrectInput, "Invalid move" unless possible_moves(from).include?(to)
+    raise IncorrectInput, "Invalid move" unless valid_moves(from).include?(to)
     move = Move.new(@board, from, to)
     move.commit
     if check?
@@ -68,9 +59,9 @@ class Game
     end
   end
 
-  def stalemate?
+  def over?
     @board.piece_coordinates(@current_player.color).all? do |coord|
-      valid_moves(coord).empty?
+      safe_moves(coord).empty?
     end
   end
 
@@ -81,7 +72,7 @@ class Game
   def check?
     opposite_color = @current_player.color == :black ? :white : :black
     @board.piece_coordinates(opposite_color).any? do |coord|
-      possible_moves(coord).include? @board.kings[@current_player.color]
+      valid_moves(coord).include? @board.kings[@current_player.color]
     end
   end
 end

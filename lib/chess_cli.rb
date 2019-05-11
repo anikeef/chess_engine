@@ -20,11 +20,11 @@ class ChessCLI
 
   def play
     catch(:exit) do
-      until @game.stalemate?
+      until @game.over?
         puts "\n#{@game.filename}\n#{@game.board}"
         declare_check if @game.check?
         begin
-          @game.make_move(*input_move)
+          @game.move(*input_move)
         rescue IncorrectInput => e
           puts "#{e.message}. Try again"
           retry
