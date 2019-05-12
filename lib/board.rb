@@ -8,8 +8,6 @@ Dir["./lib/pieces/*.rb"].each { |file| require file }
 class IncorrectInput < StandardError; end
 
 class Board
-  attr_reader :kings
-
   def initialize
     @board = Array.new(8) { Array.new(8) { nil } }
   end
@@ -24,7 +22,6 @@ class Board
         self[column, row2] = Pawn.new(color)
       end
     end
-    @kings = {white: [4, 0], black: [4, 7]}
   end
 
   def [](column, row)

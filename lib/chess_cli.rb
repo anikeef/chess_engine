@@ -21,7 +21,7 @@ class ChessCLI
   def play
     catch(:exit) do
       until @game.over?
-        puts "\n#{@game.filename}\n#{@game.board}"
+        puts "\n#{@game.filename}\n#{@game.draw}"
         declare_check if @game.king_attacked?
         begin
           @game.move(*input_move)

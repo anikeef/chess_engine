@@ -5,7 +5,8 @@ require "./lib/move.rb"
 Dir["./lib/pieces/*.rb"].each { |file| require file }
 
 class Game
-  attr_accessor :filename, :current_color
+  attr_accessor :filename
+  attr_reader :current_color
   include MoveValidator
 
   def initialize
@@ -14,6 +15,7 @@ class Game
     @current_color = :white
     @last_piece = nil
     @filename = nil
+    @kings = {white: [4, 0], black: [4, 7]}
   end
 
   def move(string)
@@ -47,6 +49,10 @@ class Game
     letters = ("a".."h").to_a
     return nil unless /[a-h][1-8]/.match?(str)
     @board.at([letters.find_index(str[0]), str[1].to_i - 1])
+  end
+
+  def draw
+    @board.to_s
   end
 
   def castling(length)
@@ -83,7 +89,7 @@ class Game
   end
 
   def king_attacked?
-    king_coords = @board.kings[@current_color]
+    king_coords = @kings[@current_color]
     [[1, 1], [-1, 1], [-1, -1], [1, -1]].each do |move|
       edge_coords = repeated_move(king_coords, move).last
       piece = edge_coords.nil? ? nil : @board.at(edge_coords)
