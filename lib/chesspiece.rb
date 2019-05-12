@@ -22,4 +22,12 @@ class ChessPiece
   def knight?
     self.class.to_s == "Knight"
   end
+
+  def king?
+    self.class.to_s == "King"
+  end
+
+  def pawn?
+    self.class.to_s == "Pawn"
+  end
 end

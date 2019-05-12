@@ -15,7 +15,6 @@ class Game
     @current_color = :white
     @last_piece = nil
     @filename = nil
-    @kings = {white: [4, 0], black: [4, 7]}
   end
 
   def move(string)
@@ -33,7 +32,7 @@ class Game
 
     @last_piece = piece
     piece.moves_count += 1
-    promotion(piece) if piece.class == Pawn && [7, 0].include?(to[1])
+    promotion(piece) if piece.pawn? && [7, 0].include?(to[1])
     next_player
   end
 
@@ -89,7 +88,7 @@ class Game
   end
 
   def king_attacked?
-    king_coords = @kings[@current_color]
+    king_coords = @board.king_coords(@current_color)
     [[1, 1], [-1, 1], [-1, -1], [1, -1]].each do |move|
       edge_coords = repeated_move(king_coords, move).last
       piece = edge_coords.nil? ? nil : @board.at(edge_coords)

@@ -84,6 +84,12 @@ class Board
     list
   end
 
+  def king_coords(color)
+    Board.coordinates_list.find do |coord|
+      at(coord) && at(coord).king? && at(coord).color == color
+    end
+  end
+
   def piece_coordinates(color)
     Board.coordinates_list.select do |coord|
       piece = at(coord)

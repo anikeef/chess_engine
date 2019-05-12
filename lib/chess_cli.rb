@@ -58,16 +58,16 @@ class ChessCLI
   end
 
   def declare_check
-    puts "#{@game.current_player.color.to_s.capitalize} player is given a check"
+    puts "#{@game.current_color.to_s.capitalize} player is given a check"
   end
 
   def declare_checkmate
-    puts "#{@game.current_player.color.to_s.capitalize} player got mated!"
+    puts "#{@game.current_color.to_s.capitalize} player got mated!"
   end
 
   def game_over
-    puts @board
-    if @game.check?
+    puts @game.draw
+    if @game.king_attacked?
       declare_checkmate
     else
       puts "Stalemate!"
