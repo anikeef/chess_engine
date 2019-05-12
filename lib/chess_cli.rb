@@ -22,7 +22,7 @@ class ChessCLI
     catch(:exit) do
       until @game.over?
         puts "\n#{@game.filename}\n#{@game.board}"
-        declare_check if @game.check?
+        declare_check if @game.king_attacked?
         begin
           @game.move(*input_move)
         rescue IncorrectInput => e
@@ -77,13 +77,10 @@ class ChessCLI
   COLUMN_LETTERS = ["a", "b", "c", "d", "e", "f", "g", "h"]
 
   def input_move
-    print "#{@game.current_player.color.to_s.capitalize}'s move (e. g. \"e2e4\" or \"exit\"): "
-    input = gets.gsub(/\s+/, "")
-    throw :exit if /^exit$/i.match?(input)
-    return [input, :castling] if /[0o]{2,3}/i.match?(input)
-    raise IncorrectInput, "Input must look like \"e2 e4\" or \"a6b5\"" unless /^[a-h][1-8][a-h][1-8]$/i.match?(input)
-    [[COLUMN_LETTERS.find_index(input[0]), input[1].to_i - 1],
-    [COLUMN_LETTERS.find_index(input[2]), input[3].to_i - 1]]
+    print "#{@game.current_color.to_s.capitalize}'s move (e. g. \"e2e4\" or \"exit\"): "
+    input = gets.chomp
+    throw :exit if /exit/i.match?(input)
+    return input
   end
 
   def input_promotion

@@ -38,7 +38,7 @@ module MoveValidator
   def valid_move?(coordinates)
     if @board.exists_at?(coordinates)
       piece = @board.at(coordinates)
-      return (piece.nil? || piece.color != @current_player.color)
+      return (piece.nil? || piece.color != @current_color)
     end
     return false
   end
@@ -47,7 +47,7 @@ module MoveValidator
     is_fatal = false
     move = Move.new(@board, from, to)
     move.commit
-    is_fatal = true if check?
+    is_fatal = true if king_attacked?
     move.rollback
     is_fatal
   end

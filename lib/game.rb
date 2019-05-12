@@ -5,23 +5,22 @@ require "./lib/move.rb"
 Dir["./lib/pieces/*.rb"].each { |file| require file }
 
 class Game
-  attr_accessor :filename, :board, :current_player
+  attr_accessor :filename, :current_color
   include MoveValidator
 
   def initialize
     @board = Board.new
     @board.set_default
-    @players = [Player.new(:white), Player.new(:black)]
-    @current_player = @players[0]
+    @current_color = :white
     @last_piece = nil
     @filename = nil
   end
 
   def move(string)
-    from, to = move_from_string(string)
+    from, to = Game.string_to_move(string)
     piece = @board.at(from)
     raise IncorrectInput, "Empty square is chosen" if piece.nil?
-    raise IncorrectInput, "This is not your piece" unless piece.color == @current_player.color
+    raise IncorrectInput, "This is not your piece" unless piece.color == @current_color
     raise IncorrectInput, "Invalid move" unless valid_moves(from).include?(to)
     move = Move.new(@board, from, to)
     move.commit
@@ -36,9 +35,9 @@ class Game
     next_player
   end
 
-  def move_from_string(string)
+  def Game.string_to_move(string)
     string = string.gsub(/\s+/, "").downcase
-    raise IncorrectInput, "Incorrect input" unless /[a-h][1-8][a-h][1-8]/.match?(string)
+    raise IncorrectInput, "Input must look like \"e2 e4\" or \"a6b5\"" unless /^[a-h][1-8][a-h][1-8]$/.match?(string)
     letters = ("a".."h").to_a
     [[letters.find_index(string[0]), string[1].to_i - 1],
      [letters.find_index(string[2]), string[3].to_i - 1]]
@@ -50,13 +49,8 @@ class Game
     @board.at([letters.find_index(str[0]), str[1].to_i - 1])
   end
 
-  def promotion(pawn)
-    piece_classes = [Queen, Rook, Knight, Elephant]
-    @board.set_at(pawn.position, piece_classes[@current_player.input_promotion - 1].new(@current_player.color))
-  end
-
   def castling(length)
-    row = @current_player.color == :white ? 0 : 7
+    row = @current_color == :white ? 0 : 7
     king = @board[4, row]
     rook = length == 2 ? @board[7, row] : @board[0, row]
     line = length == 2 ? [5, 6] : [1, 2, 3]
@@ -75,24 +69,21 @@ class Game
   end
 
   def over?
-    @board.piece_coordinates(@current_player.color).all? do |coord|
+    @board.piece_coordinates(@current_color).all? do |coord|
       safe_moves(coord).empty?
     end
   end
 
   def next_player
-    @current_player = @current_player == @players[0] ? @players[1] : @players[0]
+    @current_color = opposite_color
   end
 
-  def check?
-    opposite_color = @current_player.color == :black ? :white : :black
-    @board.piece_coordinates(opposite_color).any? do |coord|
-      valid_moves(coord).include? @board.kings[@current_player.color]
-    end
+  def opposite_color
+    @current_color == :white ? :black : :white
   end
 
   def king_attacked?
-    king_coords = @board.kings[@current_player.color]
+    king_coords = @board.kings[@current_color]
     [[1, 1], [-1, 1], [-1, -1], [1, -1]].each do |move|
       edge_coords = repeated_move(king_coords, move).last
       piece = edge_coords.nil? ? nil : @board.at(edge_coords)
