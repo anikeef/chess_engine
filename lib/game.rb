@@ -17,7 +17,8 @@ class Game
     @filename = nil
   end
 
-  def move(from, to)
+  def move(string)
+    from, to = move_from_string(string)
     piece = @board.at(from)
     raise IncorrectInput, "Empty square is chosen" if piece.nil?
     raise IncorrectInput, "This is not your piece" unless piece.color == @current_player.color
@@ -33,6 +34,14 @@ class Game
     piece.moves_count += 1
     promotion(piece) if piece.class == Pawn && [7, 0].include?(to[1])
     next_player
+  end
+
+  def move_from_string(string)
+    string = string.gsub(/\s+/, "").downcase
+    raise IncorrectInput, "Incorrect input" unless /[a-h][1-8][a-h][1-8]/.match?(string)
+    letters = ("a".."h").to_a
+    [[letters.find_index(string[0]), string[1].to_i - 1],
+     [letters.find_index(string[2]), string[3].to_i - 1]]
   end
 
   def promotion(pawn)

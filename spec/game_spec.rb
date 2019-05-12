@@ -1,4 +1,5 @@
 require "./lib/game.rb"
+require "./spec/game_helper.rb"
 
 describe Game do
   before :each do
@@ -7,35 +8,31 @@ describe Game do
 
   describe "#move" do
     it "raises an error if the empty square is chosen" do
-      expect { @game.move([4, 2], [4, 3]) }.to raise_error(IncorrectInput, "Empty square is chosen")
+      expect { @game.move("e3e4") }.to raise_error(IncorrectInput, "Empty square is chosen")
     end
 
     it "raises an error if a player choses not his own piece" do
-      expect { @game.move([2, 6], [2, 5]) }.to raise_error(IncorrectInput, "This is not your piece")
+      expect { @game.move("c7c6") }.to raise_error(IncorrectInput, "This is not your piece")
     end
 
     it "raises an error if invalid move is made" do
-      expect { @game.move([4, 1], [4, 4]) }.to raise_error(IncorrectInput, "Invalid move")
+      expect { @game.move("e2e5") }.to raise_error(IncorrectInput, "Invalid move")
     end
 
     it "raises an error if the move is fatal" do
-      @game.board.set_at([7, 3], Queen.new(:black))
-      expect { @game.move([5, 1], [5, 2]) }.to raise_error(IncorrectInput, "Fatal move")
-      puts @game.board
+
+      execute_game(%w{a2a3 e7e6 a3a4 d8h4})
+      expect { @game.move("f2f3") }.to raise_error(IncorrectInput, "Fatal move")
     end
 
     it "makes correct moves" do
-      @game.move([4, 1], [4, 3])
+      @game.move("e2e4")
       expect(@game.board[4, 3]).to be_a(Pawn)
       expect(@game.board[4, 1]).to be_nil
     end
 
     it "makes en passant" do
-      @game.move([0, 1], [0, 3])
-      @game.move([7, 6], [7, 4])
-      @game.move([0, 3], [0, 4])
-      @game.move([1, 6], [1, 4])
-      @game.move([0, 4], [1, 5])
+      execute_game(%w{a2a4 h7h5 a4a5 b7b5 a5b6})
       expect(@game.board[0, 4]).to be_nil
       expect(@game.board[1, 4]).to be_nil
       expect(@game.board[1, 5]).to be_a(Pawn)
@@ -46,11 +43,7 @@ describe Game do
 
   describe "#play" do
     it "plays until the checkmate" do
-      # f2f3, e7e6, g2g4, d8h4
-      @game.move([5, 1], [5, 2])
-      @game.move([4, 6], [4, 5])
-      @game.move([6, 1], [6, 3])
-      @game.move([3, 7], [7, 3])
+      execute_game(%w{f2f3 e7e6 g2g4 d8h4})
       expect @game.over?
     end
   end
