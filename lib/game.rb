@@ -44,6 +44,12 @@ class Game
      [letters.find_index(string[2]), string[3].to_i - 1]]
   end
 
+  def [](str)
+    letters = ("a".."h").to_a
+    return nil unless /[a-h][1-8]/.match?(str)
+    @board.at([letters.find_index(str[0]), str[1].to_i - 1])
+  end
+
   def promotion(pawn)
     piece_classes = [Queen, Rook, Knight, Elephant]
     @board.set_at(pawn.position, piece_classes[@current_player.input_promotion - 1].new(@current_player.color))

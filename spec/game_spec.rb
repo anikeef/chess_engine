@@ -27,16 +27,16 @@ describe Game do
 
     it "makes correct moves" do
       @game.move("e2e4")
-      expect(@game.board[4, 3]).to be_a(Pawn)
-      expect(@game.board[4, 1]).to be_nil
+      expect(@game["e4"]).to be_a(Pawn)
+      expect(@game["e2"]).to be_nil
     end
 
     it "makes en passant" do
       execute_game(%w{a2a4 h7h5 a4a5 b7b5 a5b6})
-      expect(@game.board[0, 4]).to be_nil
-      expect(@game.board[1, 4]).to be_nil
-      expect(@game.board[1, 5]).to be_a(Pawn)
-      expect(@game.board[1, 5].color).to eq(:white)
+      expect(@game["a5"]).to be_nil
+      expect(@game["b5"]).to be_nil
+      expect(@game["b6"]).to be_a(Pawn)
+      expect(@game["b6"].color).to eq(:white)
     end
   end
 
