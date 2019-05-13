@@ -15,11 +15,13 @@ class Game
     @current_color = :white
     @last_piece = nil
     @filename = nil
+    @promotion_coord = false
   end
 
   def move(string)
     from, to = Game.string_to_move(string)
     piece = @board.at(from)
+    raise IncorrectInput, "#{@current_color} player should execute pawn promotion first" if needs_promotion?
     raise IncorrectInput, "Empty square is chosen" if piece.nil?
     raise IncorrectInput, "This is not your piece" unless piece.color == @current_color
     raise IncorrectInput, "Invalid move" unless valid_moves(from).include?(to)
@@ -32,7 +34,7 @@ class Game
 
     @last_piece = piece
     piece.moves_count += 1
-    promotion(piece) if piece.pawn? && [7, 0].include?(to[1])
+    @promotion_coord = to and return if piece.pawn? && [7, 0].include?(to[1])
     next_player
   end
 
@@ -52,6 +54,15 @@ class Game
 
   def draw
     @board.to_s
+  end
+
+  def promotion(class_name)
+    unless ["rook", "knight", "elephant", "queen"].include?(class_name.downcase)
+      raise IncorrectInput, "Invalid promotion"
+    end
+    @board.set_at(@promotion_coord, Module.const_get(class_name.capitalize).new(@current_color))
+    @promotion_coord = nil
+    next_player
   end
 
   def castling(length)
@@ -93,6 +104,10 @@ class Game
 
   def opposite_color
     @current_color == :white ? :black : :white
+  end
+
+  def needs_promotion?
+    !!@promotion_coord
   end
 
   def king_attacked?

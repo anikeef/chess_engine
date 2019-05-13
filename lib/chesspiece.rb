@@ -19,7 +19,7 @@ class ChessPiece
     ["Rook", "Queen", "King"].include? self.class.to_s
   end
 
-  ["knight", "king", "pawn", "rook"].each do |piece|
+  ["knight", "king", "pawn", "rook", "queen", "elephant"].each do |piece|
     define_method(:"#{piece}?") do
       self.class.to_s == piece.capitalize
     end

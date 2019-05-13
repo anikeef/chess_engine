@@ -52,12 +52,27 @@ describe Game do
     it "plays with short and long castling" do
       execute_game(%w{g1f3 b8a6 g2g3 b7b6 f1g2 c8b7 h2h3 c7c6})
       @game.castling(:short)
-      expect @game["g1"].king?
-      expect @game["f1"].rook?
+      expect(@game["g1"].king?).to eq(true)
+      expect(@game["f1"].rook?).to eq(true)
       execute_game(%w{d8c7 h3h4})
       @game.castling(:long)
-      expect @game["c8"].king?
-      expect @game["d8"].rook?
+      expect(@game["c8"].king?).to eq(true)
+      expect(@game["d8"].rook?).to eq(true)
+    end
+  end
+
+  describe "#promotion" do
+    it "plays with promotion" do
+      expect(@game.needs_promotion?).to eq(false)
+      execute_game(%w{g2g4 h7h5 g1f3 h5g4 h2h4 g4g3 f1h3 g3g2 h1h2 g2g1})
+      expect(@game.needs_promotion?).to eq(true)
+      expect(@game.current_color).to eq(:black)
+      expect { @game.move("e2e4") }.to raise_error(IncorrectInput)
+      puts @game.draw
+      @game.promotion("Queen")
+      puts @game.draw
+      expect(@game["g1"].queen?).to eq(true)
+      expect(@game["g1"].color).to eq(:black)
     end
   end
 
