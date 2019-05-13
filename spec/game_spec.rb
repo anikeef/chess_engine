@@ -8,21 +8,20 @@ describe Game do
 
   describe "#move" do
     it "raises an error if the empty square is chosen" do
-      expect { @game.move("e3e4") }.to raise_error(IncorrectInput, "Empty square is chosen")
+      expect { @game.move("e3e4") }.to raise_error(InvalidMove, "Empty square is chosen")
     end
 
     it "raises an error if a player choses not his own piece" do
-      expect { @game.move("c7c6") }.to raise_error(IncorrectInput, "This is not your piece")
+      expect { @game.move("c7c6") }.to raise_error(InvalidMove, "This is not your piece")
     end
 
     it "raises an error if invalid move is made" do
-      expect { @game.move("e2e5") }.to raise_error(IncorrectInput, "Invalid move")
+      expect { @game.move("e2e5") }.to raise_error(InvalidMove, "Invalid move")
     end
 
     it "raises an error if the move is fatal" do
-
       execute_game(%w{a2a3 e7e6 a3a4 d8h4})
-      expect { @game.move("f2f3") }.to raise_error(IncorrectInput, "Fatal move")
+      expect { @game.move("f2f3") }.to raise_error(InvalidMove, "Fatal move")
     end
 
     it "makes correct moves" do
@@ -71,7 +70,7 @@ describe Game do
       execute_game(%w{g2g4 h7h5 g1f3 h5g4 h2h4 g4g3 f1h3 g3g2 h1h2 g2g1})
       expect(@game.needs_promotion?).to eq(true)
       expect(@game.current_color).to eq(:black)
-      expect { @game.move("e2e4") }.to raise_error(IncorrectInput)
+      expect { @game.move("e2e4") }.to raise_error(InvalidMove)
       @game.promotion("Queen")
       expect(@game["g1"].queen?).to eq(true)
       expect(@game["g1"].color).to eq(:black)

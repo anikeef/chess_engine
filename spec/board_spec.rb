@@ -44,10 +44,6 @@ describe Board do
       expect(@board[4, 1]).to be_nil
       expect(@board[4, 3]).to be_a Pawn
     end
-
-    it "changes the position attribute of moved piece" do
-      expect(@board[4, 3].position).to eq([4, 3])
-    end
   end
 
   describe "#exists_at?" do

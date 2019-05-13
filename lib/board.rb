@@ -1,11 +1,7 @@
 require "./lib/chesspiece.rb"
 require "colorize"
-require "pry"
-require "rb-readline"
 
 Dir["./lib/pieces/*.rb"].each { |file| require file }
-
-class IncorrectInput < StandardError; end
 
 class Board
   def initialize

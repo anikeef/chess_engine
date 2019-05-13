@@ -3,6 +3,8 @@ require "./lib/validator.rb"
 require "./lib/move.rb"
 Dir["./lib/pieces/*.rb"].each { |file| require file }
 
+class InvalidMove < StandardError; end
+
 class Game
   attr_accessor :filename
   attr_reader :current_color
@@ -20,17 +22,16 @@ class Game
   def move(string)
     from, to = Game.string_to_move(string)
     piece = @board.at(from)
-    raise IncorrectInput, "Game is over" if over?
-    raise IncorrectInput, "#{@current_color} player should execute pawn promotion first" if needs_promotion?
-    raise IncorrectInput, "Empty square is chosen" if piece.nil?
-    raise IncorrectInput, "This is not your piece" unless piece.color == @current_color
-    raise IncorrectInput, "Invalid move" unless valid_moves(from).include?(to)
+    raise InvalidMove, "Game is over" if over?
+    raise InvalidMove, "#{@current_color} player should execute pawn promotion first" if needs_promotion?
+    raise InvalidMove, "Empty square is chosen" if piece.nil?
+    raise InvalidMove, "This is not your piece" unless piece.color == @current_color
+    raise InvalidMove, "Invalid move" unless valid_moves(from).include?(to)
     move = Move.new(@board, from, to)
     move.commit
     if king_attacked?
       move.rollback
-      puts string
-      raise IncorrectInput, "Fatal move"
+      raise InvalidMove, "Fatal move"
     end
 
     @last_piece = piece
@@ -51,7 +52,7 @@ class Game
 
   def promotion(class_name)
     unless ["rook", "knight", "elephant", "queen"].include?(class_name.downcase)
-      raise IncorrectInput, "Invalid promotion"
+      raise InvalidMove, "Invalid promotion"
     end
     @board.set_at(@promotion_coord, Module.const_get(class_name.capitalize).new(@current_color))
     @promotion_coord = nil
@@ -72,14 +73,14 @@ class Game
       moves = [Move.new(@board, [4, row], [2, row]),
         Move.new(@board, [0, row], [3, row])]
     end
-    raise IncorrectInput, "Invalid castling" unless
+    raise InvalidMove, "Invalid castling" unless
       king && rook && king.moves_count == 0 && rook.moves_count == 0 &&
       line.all? { |x| @board.at([x, row]).nil? }
 
     moves.each { |move| move.commit }
     if king_attacked?
       moves.each { |move| move.rollback }
-      raise IncorrectInput, "Fatal move"
+      raise InvalidMove, "Fatal move"
     end
     @last_piece = nil
     next_player
@@ -130,7 +131,7 @@ class Game
 
   def Game.string_to_move(string)
     string = string.gsub(/\s+/, "").downcase
-    raise IncorrectInput, "Input must look like \"e2 e4\" or \"a6b5\"" unless /^[a-h][1-8][a-h][1-8]$/.match?(string)
+    raise InvalidMove, "Input must look like \"e2 e4\" or \"a6b5\"" unless /^[a-h][1-8][a-h][1-8]$/.match?(string)
     letters = ("a".."h").to_a
     [[letters.find_index(string[0]), string[1].to_i - 1],
      [letters.find_index(string[2]), string[3].to_i - 1]]
