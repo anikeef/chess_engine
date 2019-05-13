@@ -56,21 +56,29 @@ class Game
 
   def castling(length)
     row = @current_color == :white ? 0 : 7
-    king = @board[4, row]
-    rook = length == 2 ? @board[7, row] : @board[0, row]
-    line = length == 2 ? [5, 6] : [1, 2, 3]
-    raise IncorrectInput, "Invalid castling" unless
-      king.class == King && rook.class == Rook &&
-      king.moves == 0 && rook.moves == 0 &&
-      line.all? { |x| @board[x, row].nil? }
-
-    if length == 2
-      @board.move_piece([4, row], [6, row])
-      @board.move_piece([7, row], [5, row])
+    king = @board.at([4, row])
+    if length == :short
+      rook = @board.at([7, row])
+      line = [5, 6]
+      moves = [Move.new(@board, [4, row], [6, row]),
+        Move.new(@board, [7, row], [5, row])]
     else
-      @board.move_piece([4, row], [2, row])
-      @board.move_piece([0, row], [3, row])
+      rook = @board.at([0, row])
+      line = [1, 2, 3]
+      moves = [Move.new(@board, [4, row], [2, row]),
+        Move.new(@board, [0, row], [3, row])]
     end
+    raise IncorrectInput, "Invalid castling" unless
+      king && rook && king.moves_count == 0 && rook.moves_count == 0 &&
+      line.all? { |x| @board.at([x, row]).nil? }
+
+    moves.each { |move| move.commit }
+    if king_attacked?
+      moves.each { |move| move.rollback }
+      raise IncorrectInput, "Fatal move"
+    end
+    @last_piece = nil
+    next_player
   end
 
   def over?
