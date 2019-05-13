@@ -1,4 +1,4 @@
-require "./lib/chesspiece.rb"
+require "./lib/piece.rb"
 
 module Chess
   class Knight < Piece

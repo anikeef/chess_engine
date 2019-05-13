@@ -1,4 +1,4 @@
-require "./lib/chesspiece.rb"
+require "./lib/piece.rb"
 require "colorize"
 
 Dir["./lib/pieces/*.rb"].each { |file| require file }
