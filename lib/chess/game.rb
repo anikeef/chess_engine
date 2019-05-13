@@ -1,7 +1,6 @@
-require "./lib/board.rb"
-require "./lib/validator.rb"
-require "./lib/move.rb"
-Dir["./lib/pieces/*.rb"].each { |file| require file }
+require_relative "board"
+require_relative "validator"
+require_relative "move"
 
 module Chess
   class InvalidMove < StandardError; end

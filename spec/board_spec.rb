@@ -1,4 +1,4 @@
-require "./lib/board.rb"
+require "./lib/chess/board.rb"
 
 describe Chess::Board do
   before(:each) do

@@ -1,5 +1,5 @@
-require "./lib/game.rb"
-require "./lib/get_input"
+require_relative "game"
+require_relative "../input"
 require "yaml"
 
 

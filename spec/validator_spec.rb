@@ -1,4 +1,4 @@
-require "./lib/game.rb"
+require "./lib/chess/game.rb"
 
 describe Chess::MoveValidator do
   before(:each) do

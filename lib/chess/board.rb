@@ -1,7 +1,5 @@
-require "./lib/piece.rb"
+require_relative "piece"
 require "colorize"
-
-Dir["./lib/pieces/*.rb"].each { |file| require file }
 
 module Chess
   class Board
@@ -11,8 +9,8 @@ module Chess
 
     def set_default
       [[:white, 0, 1], [:black, 7, 6]].each do |color, row1, row2|
-        [Rook, Knight, Elephant, Queen, King, Elephant, Knight, Rook].each.with_index do |piece, column|
-          self[column, row1] = piece.new(color)
+        ["Rook", "Knight", "Elephant", "Queen", "King", "Elephant", "Knight", "Rook"].each.with_index do |class_name, column|
+          self[column, row1] = Module.const_get("Chess::#{class_name}").new(color)
         end
 
         0.upto(7) do |column|

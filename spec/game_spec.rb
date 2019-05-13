@@ -1,4 +1,4 @@
-require "./lib/game.rb"
+require "./lib/chess/game.rb"
 require "./spec/game_helper.rb"
 
 describe Chess::Game do
