@@ -1,6 +1,6 @@
 require "./lib/board.rb"
 
-describe Board do
+describe Chess::Board do
   before(:each) do
     @board = Chess::Board.new
   end
@@ -42,7 +42,7 @@ describe Board do
 
     it "moves piece between two points" do
       expect(@board[4, 1]).to be_nil
-      expect(@board[4, 3]).to be_a Pawn
+      expect(@board[4, 3].pawn?).to eq(true)
     end
   end
 

@@ -11,7 +11,7 @@ module Chess
           to = relative_coords(from, move)
           to if valid_move?(to)
         end.compact
-      elsif piece.class == Pawn
+      elsif piece.pawn?
         pawn_valid_moves(from)
       else
         valid_moves_recursive(from)
