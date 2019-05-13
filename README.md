@@ -17,7 +17,7 @@ This is my final Ruby project before moving to Rails framework. In this PvP game
 Here are the steps you need to make to play this game:
 1. Make sure that Ruby is installed on your machine
 2. Go to the main directory of the project
-3. Type `ruby lib/session.rb` in your command line
+3. Type `ruby lib/chess/cli.rb` in your command line
 
 ## How to play
 * Trivial moves are made by typing in something like "e2e4" or `e3 f5` or even ` a 1 b 3 ` (whitespace doesn't matter)
