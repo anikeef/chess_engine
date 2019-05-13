@@ -22,7 +22,7 @@ class ChessCLI
     catch(:exit) do
       until @game.over?
         puts "\n#{@game.filename}\n#{@game.draw}"
-        declare_check if @game.king_attacked?
+        declare_check if @game.check?
         begin
           @game.move(*input_move)
         rescue IncorrectInput => e
@@ -67,7 +67,7 @@ class ChessCLI
 
   def game_over
     puts @game.draw
-    if @game.king_attacked?
+    if @game.check?
       declare_checkmate
     else
       puts "Stalemate!"

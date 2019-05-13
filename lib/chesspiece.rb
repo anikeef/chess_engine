@@ -12,10 +12,10 @@ class ChessPiece
   end
 
   def beats_diagonally?
-    ["Pawn", "King", "Elephant", "Queen"].include? self.class.to_s
+    ["Elephant", "Queen"].include? self.class.to_s
   end
 
-  def beats_straigt?
+  def beats_straight?
     ["Rook", "Queen", "King"].include? self.class.to_s
   end
 

@@ -40,11 +40,15 @@ describe Game do
     end
   end
 
-
   describe "#over?" do
     it "recognizes the checkmate" do
       execute_game(%w{f2f3 e7e6 g2g4 d8h4})
-      expect @game.over?
+      expect(@game.over?).to eq(true)
+    end
+
+    it "recognizes the stalemate" do
+      execute_game(%w{c2c4 h7h5 h2h4 a7a5 d1a4 a8a6 a4a5 a6h6 a5c7 f7f6 c7d7 e8f7 d7b7 d8d3 b7b8 d3h7 b8c8 f7g6 c8e6})
+      expect(@game.over?).to eq(true)
     end
   end
 
@@ -68,17 +72,9 @@ describe Game do
       expect(@game.needs_promotion?).to eq(true)
       expect(@game.current_color).to eq(:black)
       expect { @game.move("e2e4") }.to raise_error(IncorrectInput)
-      puts @game.draw
       @game.promotion("Queen")
-      puts @game.draw
       expect(@game["g1"].queen?).to eq(true)
       expect(@game["g1"].color).to eq(:black)
     end
   end
-
-  #   it "plays with the promotion" do
-  #     allow_any_instance_of(Player).to receive(:gets).and_return("g2g4", "h7h5", "g1f3", "h5g4", "h2h4", "g4g3", "f1h3", "g3g2", "h1h2", "g2g1", "1", "exit")
-  #     @game.play
-  #     expect(@game.instance_variable_get(:@board)[6, 0]).to be_a(Queen)
-  #   end
 end

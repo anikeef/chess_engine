@@ -21,6 +21,7 @@ class Game
   def move(string)
     from, to = Game.string_to_move(string)
     piece = @board.at(from)
+    raise IncorrectInput, "Game is over" if over?
     raise IncorrectInput, "#{@current_color} player should execute pawn promotion first" if needs_promotion?
     raise IncorrectInput, "Empty square is chosen" if piece.nil?
     raise IncorrectInput, "This is not your piece" unless piece.color == @current_color
@@ -29,6 +30,7 @@ class Game
     move.commit
     if king_attacked?
       move.rollback
+      puts string
       raise IncorrectInput, "Fatal move"
     end
 
@@ -36,14 +38,6 @@ class Game
     piece.moves_count += 1
     @promotion_coord = to and return if piece.pawn? && [7, 0].include?(to[1])
     next_player
-  end
-
-  def Game.string_to_move(string)
-    string = string.gsub(/\s+/, "").downcase
-    raise IncorrectInput, "Input must look like \"e2 e4\" or \"a6b5\"" unless /^[a-h][1-8][a-h][1-8]$/.match?(string)
-    letters = ("a".."h").to_a
-    [[letters.find_index(string[0]), string[1].to_i - 1],
-     [letters.find_index(string[2]), string[3].to_i - 1]]
   end
 
   def [](str)
@@ -98,26 +92,30 @@ class Game
     end
   end
 
-  def next_player
-    @current_color = opposite_color
-  end
-
-  def opposite_color
-    @current_color == :white ? :black : :white
-  end
-
   def needs_promotion?
     !!@promotion_coord
   end
 
+  def check?
+    king_attacked?
+  end
+
+  private
+
   def king_attacked?
     king_coords = @board.king_coords(@current_color)
     [[1, 1], [-1, 1], [-1, -1], [1, -1]].each do |move|
+      next_coords = relative_coords(king_coords, move)
+      piece = @board.at(next_coords)
+      return true if piece && piece.color != @current_color && (piece.pawn? || piece.king?)
       edge_coords = repeated_move(king_coords, move).last
       piece = edge_coords.nil? ? nil : @board.at(edge_coords)
-      return true if !piece.nil? && piece.beats_diagonally?
+      return true if piece && piece.beats_diagonally?
     end
     [[1, 0], [-1, 0], [0, 1], [0, -1]].each do |move|
+      next_coords = relative_coords(king_coords, move)
+      piece = @board.at(next_coords)
+      return true if piece && piece.king?
       edge_coords = repeated_move(king_coords, move).last
       piece = edge_coords.nil? ? nil : @board.at(edge_coords)
       return true if !piece.nil? && piece.beats_straight?
@@ -129,5 +127,21 @@ class Game
       return true if !piece.nil? && piece.knight?
     end
     false
+  end
+
+  def Game.string_to_move(string)
+    string = string.gsub(/\s+/, "").downcase
+    raise IncorrectInput, "Input must look like \"e2 e4\" or \"a6b5\"" unless /^[a-h][1-8][a-h][1-8]$/.match?(string)
+    letters = ("a".."h").to_a
+    [[letters.find_index(string[0]), string[1].to_i - 1],
+     [letters.find_index(string[2]), string[3].to_i - 1]]
+  end
+
+  def opposite_color
+    @current_color == :white ? :black : :white
+  end
+
+  def next_player
+    @current_color = opposite_color
   end
 end
