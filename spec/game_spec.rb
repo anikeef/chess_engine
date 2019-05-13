@@ -1,32 +1,32 @@
 require "./lib/game.rb"
 require "./spec/game_helper.rb"
 
-describe Game do
+describe Chess::Game do
   before :each do
-    @game = Game.new
+    @game = Chess::Game.new
   end
 
   describe "#move" do
     it "raises an error if the empty square is chosen" do
-      expect { @game.move("e3e4") }.to raise_error(InvalidMove, "Empty square is chosen")
+      expect { @game.move("e3e4") }.to raise_error(Chess::InvalidMove, "Empty square is chosen")
     end
 
     it "raises an error if a player choses not his own piece" do
-      expect { @game.move("c7c6") }.to raise_error(InvalidMove, "This is not your piece")
+      expect { @game.move("c7c6") }.to raise_error(Chess::InvalidMove, "This is not your piece")
     end
 
     it "raises an error if invalid move is made" do
-      expect { @game.move("e2e5") }.to raise_error(InvalidMove, "Invalid move")
+      expect { @game.move("e2e5") }.to raise_error(Chess::InvalidMove, "Invalid move")
     end
 
     it "raises an error if the move is fatal" do
       execute_game(%w{a2a3 e7e6 a3a4 d8h4})
-      expect { @game.move("f2f3") }.to raise_error(InvalidMove, "Fatal move")
+      expect { @game.move("f2f3") }.to raise_error(Chess::InvalidMove, "Fatal move")
     end
 
     it "makes correct moves" do
       @game.move("e2e4")
-      expect(@game["e4"]).to be_a(Pawn)
+      expect(@game["e4"].pawn?).to eq(true)
       expect(@game["e2"]).to be_nil
     end
 
@@ -34,7 +34,7 @@ describe Game do
       execute_game(%w{a2a4 h7h5 a4a5 b7b5 a5b6})
       expect(@game["a5"]).to be_nil
       expect(@game["b5"]).to be_nil
-      expect(@game["b6"]).to be_a(Pawn)
+      expect(@game["b6"].pawn?).to eq(true)
       expect(@game["b6"].color).to eq(:white)
     end
   end
@@ -70,7 +70,7 @@ describe Game do
       execute_game(%w{g2g4 h7h5 g1f3 h5g4 h2h4 g4g3 f1h3 g3g2 h1h2 g2g1})
       expect(@game.needs_promotion?).to eq(true)
       expect(@game.current_color).to eq(:black)
-      expect { @game.move("e2e4") }.to raise_error(InvalidMove)
+      expect { @game.move("e2e4") }.to raise_error(Chess::InvalidMove)
       @game.promotion("Queen")
       expect(@game["g1"].queen?).to eq(true)
       expect(@game["g1"].color).to eq(:black)

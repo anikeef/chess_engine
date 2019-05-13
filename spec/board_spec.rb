@@ -2,7 +2,7 @@ require "./lib/board.rb"
 
 describe Board do
   before(:each) do
-    @board = Board.new
+    @board = Chess::Board.new
   end
 
   describe "#initialize" do

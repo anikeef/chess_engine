@@ -2,7 +2,7 @@ require "./lib/game.rb"
 
 describe MoveValidator do
   before(:each) do
-    @game = Game.new
+    @game = Chess::Game.new
   end
 
   it "validates pawn moves" do
