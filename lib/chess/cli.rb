@@ -1,5 +1,5 @@
 require_relative "game"
-require_relative "../input"
+require_relative "input"
 require "yaml"
 
 
