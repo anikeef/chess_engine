@@ -1,3 +1,4 @@
-require_relative "../lib/chess_engine/cli.rb"
+#!/usr/bin/env ruby
+require "chess_engine/cli"
 
 ChessEngine::CLI.new
