@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = "chess_engine"
   s.summary = "Simple chess library that uses algebraic notation"
-  s.description = File.read(File.join(File.dirname(__FILE__), 'README'))
+  s.description = File.read(File.join(File.dirname(__FILE__), 'README.md'))
   s.version = "0.0.1"
   s.author = "Anikeev Gennadiy"
   s.email = "genaydzhan70@gmail.com"
