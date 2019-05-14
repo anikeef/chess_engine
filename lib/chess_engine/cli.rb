@@ -3,7 +3,7 @@ require_relative "input"
 require "yaml"
 
 
-module Chess
+module ChessEngine
   class NoGamesError < StandardError; end
 
   class CLI
@@ -102,4 +102,4 @@ module Chess
   end
 end
 
-Chess::CLI.new
+ChessEngine::CLI.new

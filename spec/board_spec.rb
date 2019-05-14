@@ -1,8 +1,8 @@
-require "./lib/chess/board.rb"
+require "./lib/chess_engine/board.rb"
 
-describe Chess::Board do
+describe ChessEngine::Board do
   before(:each) do
-    @board = Chess::Board.new
+    @board = ChessEngine::Board.new
   end
 
   describe "#initialize" do

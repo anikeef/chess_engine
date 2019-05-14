@@ -1,7 +1,7 @@
 require_relative "piece"
 require "colorize"
 
-module Chess
+module ChessEngine
   class Board
     def initialize
       @board = Array.new(8) { Array.new(8) { nil } }
@@ -10,7 +10,7 @@ module Chess
     def set_default
       [[:white, 0, 1], [:black, 7, 6]].each do |color, row1, row2|
         ["Rook", "Knight", "Elephant", "Queen", "King", "Elephant", "Knight", "Rook"].each.with_index do |class_name, column|
-          self[column, row1] = Module.const_get("Chess::#{class_name}").new(color)
+          self[column, row1] = Module.const_get("ChessEngine::#{class_name}").new(color)
         end
 
         0.upto(7) do |column|

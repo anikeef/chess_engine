@@ -1,4 +1,4 @@
-module Chess
+module ChessEngine
   module MoveValidator
     def safe_moves(from)
       valid_moves(from).reject { |move| fatal_move?(from, move) }

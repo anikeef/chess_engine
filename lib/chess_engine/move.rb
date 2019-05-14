@@ -1,4 +1,4 @@
-module Chess
+module ChessEngine
   class Move
     def initialize(board, from, to)
       @board = board

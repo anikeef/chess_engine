@@ -2,7 +2,7 @@ require_relative "board"
 require_relative "validator"
 require_relative "move"
 
-module Chess
+module ChessEngine
   class InvalidMove < StandardError; end
 
   class Game
@@ -54,7 +54,7 @@ module Chess
       unless ["rook", "knight", "elephant", "queen"].include?(class_name.downcase)
         raise InvalidMove, "Invalid promotion"
       end
-      @board.set_at(@promotion_coord, Module.const_get("Chess::#{class_name.capitalize}").new(@current_color))
+      @board.set_at(@promotion_coord, Module.const_get("ChessEngine::#{class_name.capitalize}").new(@current_color))
       @promotion_coord = nil
       next_player
     end

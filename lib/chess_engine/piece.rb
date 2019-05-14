@@ -1,4 +1,4 @@
-module Chess
+module ChessEngine
   class Piece
     attr_reader :symbol, :color
     attr_accessor :moves_count
@@ -22,7 +22,7 @@ module Chess
 
     ["knight", "king", "pawn", "rook", "queen", "elephant"].each do |piece|
       define_method(:"#{piece}?") do
-        self.class.to_s == "Chess::#{piece.capitalize}"
+        self.class.to_s == "ChessEngine::#{piece.capitalize}"
       end
     end
   end
