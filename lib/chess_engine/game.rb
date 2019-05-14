@@ -6,7 +6,7 @@ module ChessEngine
   class InvalidMove < StandardError; end
 
   class Game
-    attr_accessor :filename
+    attr_accessor :name
     attr_reader :current_color
     include MoveValidator
 
@@ -15,7 +15,7 @@ module ChessEngine
       @board.set_default
       @current_color = :white
       @last_piece = nil
-      @filename = nil
+      @name = nil
       @promotion_coord = false
     end
 

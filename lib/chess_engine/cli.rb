@@ -25,7 +25,7 @@ module ChessEngine
 
     def play
       until @game.over?
-        puts "\n#{@game.filename}\n#{@game.draw}"
+        puts "\n#{@game.name}\n#{@game.draw}"
         declare_check if @game.check?
         begin
           promotion if @game.needs_promotion?
@@ -78,28 +78,29 @@ module ChessEngine
     end
 
     def choose_game
-      saved_names = Dir["./saved_games/*.yaml"].map { |filename| filename[/\.\/saved_games\/(.+)\.yaml/, 1] }
+      saved_names = Dir[File.join(CLI.dirname, "/*.yaml")].map { |filename| File.basename(filename, ".yaml") }
       raise NoGamesError, "You have no saved games" if saved_names.empty?
       puts "\nSaved games (#{saved_names.size}):"
       saved_names.each { |name| puts name }
       filename = get_input("Enter the name of the game that you want to continue: ",
         nil, "Such game doesn't exist, try again") { |input| saved_names.include?(input) }
-      return YAML::load(File.read("./saved_games/#{filename}.yaml"))
+      return YAML::load(File.read(File.join(CLI.dirname, "#{filename}.yaml")))
     end
 
     def save?
-      return false if @game.filename && File.exists?("./saved_games/#{@game.filename}.yaml") &&
-                      YAML::dump(@game) == File.read("./saved_games/#{@game.filename}.yaml")
       choice = get_input("Do you want to save the game? (y/n): ", /^[yn]$/i)
       choice == "y" ? true : false
     end
 
     def save
-      @game.filename ||= get_input("Enter the game name: ", /[^\/\>\<\|\:\&]+/)
+      @game.name ||= get_input("Enter the game name: ", /[^\/\>\<\|\:\&]+/)
       game = YAML::dump(@game)
-      File.open("./saved_games/#{@game.filename}.yaml", "w") { |file| file.write(game) }
+      Dir.mkdir(CLI.dirname) unless File.exists?(CLI.dirname)
+      File.open(File.join(CLI.dirname, "#{@game.name}.yaml"), "w") { |file| file.write(game) }
+    end
+
+    def CLI.dirname
+      File.join(Dir.home, "./.chess_engine")
     end
   end
 end
-
-ChessEngine::CLI.new

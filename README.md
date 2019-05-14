@@ -1,8 +1,7 @@
 # Command Line Chess
-This is my final Ruby project before moving to Rails framework. In this PvP game I've tried to apply all the stuff I have learned to this moment.
+This library provides all the rules of the chess game. Also it provides a command line interface with serialization features
 
 ### Features:
-* It works
 * You can make all the legal moves, including:
   * Castling
   * En passant
@@ -13,13 +12,28 @@ This is my final Ruby project before moving to Rails framework. In this PvP game
   * Stalemate
 * You can quit and save the game at almost every moment
 
-## How to start
-Here are the steps you need to make to play this game:
-1. Make sure that Ruby is installed on your machine
-2. Go to the main directory of the project
-3. Type `ruby lib/chess/cli.rb` in your command line
+## How to install
+To install the game, simply type:
+```
+gem install chess_engine
+```
+Then you can try it with `chess_engine` command
 
-## How to play
+## How to use the library
+Game is created with:
+```
+game = ChessEngine::Game.new
+```
+Then you can do something like this:
+```
+game.move("e2e4")
+# or
+game.castling(:long)
+```
+You can find the full example of using this library in the ChessEngine::CLI#play method in lib/chess_engine/cli.rb
+
+## How to play the CL game
+* Start the command line game using `chess_engine` command
 * Trivial moves are made by typing in something like "e2e4" or `e3 f5` or even ` a 1 b 3 ` (whitespace doesn't matter)
 * Short castling is done by typing in `00`, `oo` or `OO`
 * Long castling is done by typing in `000`, `ooo` or `OOO`
