@@ -1,5 +1,5 @@
 require_relative "board"
-require_relative "validator"
+require_relative "move_validator"
 require_relative "move"
 
 module ChessEngine

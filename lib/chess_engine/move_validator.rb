@@ -1,11 +1,11 @@
 module ChessEngine
   ##
-  # This module contains all the private methods needed to check if
+  # This module contains all the methods needed to check if
   # some move is valid or not. It is included in the Game class and so uses
   # some of its attributes: board, current_color and last_piece (for en passant only)
 
   module MoveValidator
-    private
+
     ## Excludes from valid_moves all fatal moves
 
     def safe_moves(from)
@@ -34,6 +34,8 @@ module ChessEngine
     ##
     # Returns an array of coordinates that can be reached by recursively
     # applying the given +move+, starting from the +from+ coordinates
+
+    private
 
     def repeated_move(from, move, valid_moves = [])
       coordinates = relative_coords(from, move)
