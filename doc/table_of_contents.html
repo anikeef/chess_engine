@@ -23,6 +23,21 @@
 <main role="main">
 <h1 class="class">Table of Contents - RDoc Documentation</h1>
 
+<h2 id="pages">Pages</h2>
+<ul>
+  <li class="file">
+    <a href="README_md.html">README</a>
+
+    <ul>
+      <li><a href="README_md.html#label-Command+Line+Chess">Command Line Chess</a>
+      <li><a href="README_md.html#label-Features-3A">Features:</a>
+      <li><a href="README_md.html#label-How+to+install">How to install</a>
+      <li><a href="README_md.html#label-How+to+use+the+library">How to use the library</a>
+      <li><a href="README_md.html#label-How+to+play+the+CL+game">How to play the CL game</a>
+    </ul>
+  </li>
+  
+</ul>
 
 <h2 id="classes">Classes and Modules</h2>
 <ul>
@@ -83,9 +98,14 @@
 <ul>
 
   <li class="method">
-    <a href="ChessEngine/Board.html#method-c-new">::new</a>
+    <a href="ChessEngine/Piece.html#method-c-new">::new</a>
     &mdash;
-    <span class="container">ChessEngine::Board</span>
+    <span class="container">ChessEngine::Piece</span>
+
+  <li class="method">
+    <a href="ChessEngine/Rook.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">ChessEngine::Rook</span>
 
   <li class="method">
     <a href="ChessEngine/CLI.html#method-c-new">::new</a>
@@ -98,34 +118,9 @@
     <span class="container">ChessEngine::Game</span>
 
   <li class="method">
-    <a href="ChessEngine/Move.html#method-c-new">::new</a>
+    <a href="ChessEngine/Board.html#method-c-new">::new</a>
     &mdash;
-    <span class="container">ChessEngine::Move</span>
-
-  <li class="method">
-    <a href="ChessEngine/Piece.html#method-c-new">::new</a>
-    &mdash;
-    <span class="container">ChessEngine::Piece</span>
-
-  <li class="method">
-    <a href="ChessEngine/Elephant.html#method-c-new">::new</a>
-    &mdash;
-    <span class="container">ChessEngine::Elephant</span>
-
-  <li class="method">
-    <a href="ChessEngine/King.html#method-c-new">::new</a>
-    &mdash;
-    <span class="container">ChessEngine::King</span>
-
-  <li class="method">
-    <a href="ChessEngine/Knight.html#method-c-new">::new</a>
-    &mdash;
-    <span class="container">ChessEngine::Knight</span>
-
-  <li class="method">
-    <a href="ChessEngine/Pawn.html#method-c-new">::new</a>
-    &mdash;
-    <span class="container">ChessEngine::Pawn</span>
+    <span class="container">ChessEngine::Board</span>
 
   <li class="method">
     <a href="ChessEngine/Queen.html#method-c-new">::new</a>
@@ -133,9 +128,29 @@
     <span class="container">ChessEngine::Queen</span>
 
   <li class="method">
-    <a href="ChessEngine/Rook.html#method-c-new">::new</a>
+    <a href="ChessEngine/Pawn.html#method-c-new">::new</a>
     &mdash;
-    <span class="container">ChessEngine::Rook</span>
+    <span class="container">ChessEngine::Pawn</span>
+
+  <li class="method">
+    <a href="ChessEngine/Knight.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">ChessEngine::Knight</span>
+
+  <li class="method">
+    <a href="ChessEngine/King.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">ChessEngine::King</span>
+
+  <li class="method">
+    <a href="ChessEngine/Elephant.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">ChessEngine::Elephant</span>
+
+  <li class="method">
+    <a href="ChessEngine/Move.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">ChessEngine::Move</span>
 
   <li class="method">
     <a href="ChessEngine/Game.html#method-i-5B-5D">#[]</a>
@@ -208,6 +223,16 @@
     <span class="container">ChessEngine::Board</span>
 
   <li class="method">
+    <a href="ChessEngine/King.html#method-i-moves">#moves</a>
+    &mdash;
+    <span class="container">ChessEngine::King</span>
+
+  <li class="method">
+    <a href="ChessEngine/Rook.html#method-i-moves">#moves</a>
+    &mdash;
+    <span class="container">ChessEngine::Rook</span>
+
+  <li class="method">
     <a href="ChessEngine/Queen.html#method-i-moves">#moves</a>
     &mdash;
     <span class="container">ChessEngine::Queen</span>
@@ -221,16 +246,6 @@
     <a href="ChessEngine/Knight.html#method-i-moves">#moves</a>
     &mdash;
     <span class="container">ChessEngine::Knight</span>
-
-  <li class="method">
-    <a href="ChessEngine/Rook.html#method-i-moves">#moves</a>
-    &mdash;
-    <span class="container">ChessEngine::Rook</span>
-
-  <li class="method">
-    <a href="ChessEngine/King.html#method-i-moves">#moves</a>
-    &mdash;
-    <span class="container">ChessEngine::King</span>
 
   <li class="method">
     <a href="ChessEngine/Game.html#method-i-needs_promotion-3F">#needs_promotion?</a>
@@ -258,6 +273,11 @@
     <span class="container">ChessEngine::Move</span>
 
   <li class="method">
+    <a href="ChessEngine/MoveValidator.html#method-i-safe_moves">#safe_moves</a>
+    &mdash;
+    <span class="container">ChessEngine::MoveValidator</span>
+
+  <li class="method">
     <a href="ChessEngine/Board.html#method-i-set_at">#set_at</a>
     &mdash;
     <span class="container">ChessEngine::Board</span>
@@ -271,6 +291,11 @@
     <a href="ChessEngine/Board.html#method-i-to_s">#to_s</a>
     &mdash;
     <span class="container">ChessEngine::Board</span>
+
+  <li class="method">
+    <a href="ChessEngine/MoveValidator.html#method-i-valid_moves">#valid_moves</a>
+    &mdash;
+    <span class="container">ChessEngine::MoveValidator</span>
 </ul>
 </main>
 
