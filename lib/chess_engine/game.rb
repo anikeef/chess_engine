@@ -5,6 +5,11 @@ require_relative "move"
 module ChessEngine
   class InvalidMove < StandardError; end
 
+  ##
+  # This class provides all the rules for the chess game. It recognizes check,
+  # checkmate and stalemate. Move validations logic can be found in the
+  # MoveValidator module, which is included in this class
+
   class Game
     attr_accessor :name
     attr_reader :current_color
@@ -18,6 +23,21 @@ module ChessEngine
       @name = nil
       @promotion_coord = false
     end
+
+    ##
+    # Accepts the move string in algebraic notation, e.g. "e2e4",
+    # and applies it to the board.
+    # Raises InvalidMove if:
+    # * Game is already over
+    # * Pawn promotion should be executed first
+    # * Empty square is chosen
+    # * Player tries to move piece of the opponent
+    # * Move is invalid (checks via the MoveValidator module)
+    # * Move is fatal (king is attacked after the move)
+    #
+    # After successfull move, the method changes the current player or
+    # goes into "A pawn needs promotion" state, which can be checked by
+    # #needs_promotion? method
 
     def move(string)
       from, to = Game.string_to_move(string)
@@ -40,24 +60,46 @@ module ChessEngine
       next_player
     end
 
+    ##
+    # Returns a piece (or nil if the square is empty) at given coordinates
+    # === Example
+    #   g = Game.new
+    #   g["e2"] #=> <Pawn ...>
+    #   g["e4"] #=> nil
+
     def [](str)
       letters = ("a".."h").to_a
       return nil unless /[a-h][1-8]/.match?(str)
       @board.at([letters.find_index(str[0]), str[1].to_i - 1])
     end
 
+    ##
+    # Returns the board in the nice-looking string
+
     def draw
       @board.to_s
     end
 
+    ##
+    # Accepts a string with name of the piece.
+    # Promotes a pawn and changes the current player.
+    # Raises InvalidMove if promotion is not needed or invalid +class_name+
+    # has been passed
+    # === Example
+    #   game.promotion("queen")
+
     def promotion(class_name)
-      unless ["rook", "knight", "elephant", "queen"].include?(class_name.downcase)
+      unless needs_promotion? && ["rook", "knight", "elephant", "queen"].include?(class_name.downcase)
         raise InvalidMove, "Invalid promotion"
       end
       @board.set_at(@promotion_coord, Module.const_get("ChessEngine::#{class_name.capitalize}").new(@current_color))
       @promotion_coord = nil
       next_player
     end
+
+    ##
+    # Accepts a +length+ sybmol :short or :long. Ensures that castling is
+    # possible and commits appropriate moves. Otherwise, raises InvalidMove
 
     def castling(length)
       row = @current_color == :white ? 0 : 7
@@ -86,15 +128,24 @@ module ChessEngine
       next_player
     end
 
+    ##
+    # Returns true if game is over
+
     def over?
       @board.piece_coordinates(@current_color).all? do |coord|
         safe_moves(coord).empty?
       end
     end
 
+    ##
+    # Checks if pawn promotion is needed
+
     def needs_promotion?
       !!@promotion_coord
     end
+
+    ##
+    # Returns true if current king is attacked
 
     def check?
       king_attacked?
@@ -123,7 +174,7 @@ module ChessEngine
       [[1, 2], [2, 1], [1, -2], [-2, 1],
       [-1, 2], [2, -1], [-1, -2], [-2, -1]].each do |move|
         coords = relative_coords(king_coords, move)
-        piece = valid_move?(coords) ? @board.at(coords) : nil
+        piece = possible_move?(coords) ? @board.at(coords) : nil
         return true if !piece.nil? && piece.knight?
       end
       false

@@ -113,6 +113,11 @@
 
   <section class="description">
     
+<p>This class provides all the rules for the chess game. It recognizes check,
+checkmate and stalemate. <a href="Move.html">Move</a> validations logic can
+be found in the <a href="MoveValidator.html">MoveValidator</a> module,
+which is included in this class</p>
+
   </section>
 
   
@@ -185,7 +190,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 13</span>
+            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 18</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>
   <span class="ruby-ivar">@board</span> = <span class="ruby-constant">Board</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">set_default</span>
@@ -225,13 +230,20 @@
 
         <div class="method-description">
           
-          
+          <p>Returns a piece (or nil if the square is empty) at given coordinates</p>
+
+<h3 id="method-i-5B-5D-label-Example">Example<span><a href="#method-i-5B-5D-label-Example">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<pre class="ruby"><span class="ruby-identifier">g</span> = <span class="ruby-constant">Game</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-identifier">g</span>[<span class="ruby-string">&quot;e2&quot;</span>] <span class="ruby-comment">#=&gt; &lt;Pawn ...&gt;</span>
+<span class="ruby-identifier">g</span>[<span class="ruby-string">&quot;e4&quot;</span>] <span class="ruby-comment">#=&gt; nil</span>
+</pre>
           
           
 
           
           <div class="method-source-code" id="5B-5D-source">
-            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 43</span>
+            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 70</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">[]</span>(<span class="ruby-identifier">str</span>)
   <span class="ruby-identifier">letters</span> = (<span class="ruby-string">&quot;a&quot;</span><span class="ruby-operator">..</span><span class="ruby-string">&quot;h&quot;</span>).<span class="ruby-identifier">to_a</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-regexp">/[a-h][1-8]/</span>.<span class="ruby-identifier">match?</span>(<span class="ruby-identifier">str</span>)
@@ -260,13 +272,15 @@
 
         <div class="method-description">
           
-          
+          <p>Accepts a <code>length</code> sybmol :short or :long. Ensures that castling
+is possible and commits appropriate moves. Otherwise, raises <a
+href="InvalidMove.html">InvalidMove</a></p>
           
           
 
           
           <div class="method-source-code" id="castling-source">
-            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 62</span>
+            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 104</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">castling</span>(<span class="ruby-identifier">length</span>)
   <span class="ruby-identifier">row</span> = <span class="ruby-ivar">@current_color</span> <span class="ruby-operator">==</span> <span class="ruby-value">:white</span> <span class="ruby-operator">?</span> <span class="ruby-value">0</span> <span class="ruby-operator">:</span> <span class="ruby-value">7</span>
   <span class="ruby-identifier">king</span> = <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">at</span>([<span class="ruby-value">4</span>, <span class="ruby-identifier">row</span>])
@@ -316,13 +330,13 @@
 
         <div class="method-description">
           
-          
+          <p>Returns true if current king is attacked</p>
           
           
 
           
           <div class="method-source-code" id="check-3F-source">
-            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 99</span>
+            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 150</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">check?</span>
   <span class="ruby-identifier">king_attacked?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -349,13 +363,13 @@
 
         <div class="method-description">
           
-          
+          <p>Returns the board in the nice-looking string</p>
           
           
 
           
           <div class="method-source-code" id="draw-source">
-            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 49</span>
+            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 79</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">draw</span>
   <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">to_s</span>
 <span class="ruby-keyword">end</span></pre>
@@ -382,13 +396,32 @@
 
         <div class="method-description">
           
-          
+          <p>Accepts the move string in algebraic notation, e.g. “e2e4”, and applies it
+to the board. Raises <a href="InvalidMove.html">InvalidMove</a> if:</p>
+<ul><li>
+<p><a href="Game.html">Game</a> is already over</p>
+</li><li>
+<p><a href="Pawn.html">Pawn</a> promotion should be executed first</p>
+</li><li>
+<p>Empty square is chosen</p>
+</li><li>
+<p>Player tries to move piece of the opponent</p>
+</li><li>
+<p><a href="Move.html">Move</a> is invalid (checks via the <a
+href="MoveValidator.html">MoveValidator</a> module)</p>
+</li><li>
+<p><a href="Move.html">Move</a> is fatal (king is attacked after the move)</p>
+</li></ul>
+
+<p>After successfull move, the method changes the current player or goes into
+“A pawn needs promotion” state, which can be checked by <a
+href="Game.html#method-i-needs_promotion-3F">needs_promotion?</a> method</p>
           
           
 
           
           <div class="method-source-code" id="move-source">
-            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 22</span>
+            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">move</span>(<span class="ruby-identifier">string</span>)
   <span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span> = <span class="ruby-constant">Game</span>.<span class="ruby-identifier">string_to_move</span>(<span class="ruby-identifier">string</span>)
   <span class="ruby-identifier">piece</span> = <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">from</span>)
@@ -432,13 +465,13 @@
 
         <div class="method-description">
           
-          
+          <p>Checks if pawn promotion is needed</p>
           
           
 
           
           <div class="method-source-code" id="needs_promotion-3F-source">
-            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 95</span>
+            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 143</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">needs_promotion?</span>
   <span class="ruby-operator">!</span><span class="ruby-operator">!</span><span class="ruby-ivar">@promotion_coord</span>
 <span class="ruby-keyword">end</span></pre>
@@ -465,13 +498,13 @@
 
         <div class="method-description">
           
-          
+          <p>Returns true if game is over</p>
           
           
 
           
           <div class="method-source-code" id="over-3F-source">
-            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 89</span>
+            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 134</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">over?</span>
   <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">piece_coordinates</span>(<span class="ruby-ivar">@current_color</span>).<span class="ruby-identifier">all?</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">coord</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">safe_moves</span>(<span class="ruby-identifier">coord</span>).<span class="ruby-identifier">empty?</span>
@@ -500,15 +533,22 @@
 
         <div class="method-description">
           
-          
+          <p>Accepts a string with name of the piece. Promotes a pawn and changes the
+current player. Raises <a href="InvalidMove.html">InvalidMove</a> if
+promotion is not needed or invalid <code>class_name</code> has been passed</p>
+
+<h3 id="method-i-promotion-label-Example">Example<span><a href="#method-i-promotion-label-Example">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<pre class="ruby"><span class="ruby-identifier">game</span>.<span class="ruby-identifier">promotion</span>(<span class="ruby-string">&quot;queen&quot;</span>)
+</pre>
           
           
 
           
           <div class="method-source-code" id="promotion-source">
-            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 53</span>
+            <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 91</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">promotion</span>(<span class="ruby-identifier">class_name</span>)
-  <span class="ruby-keyword">unless</span> [<span class="ruby-string">&quot;rook&quot;</span>, <span class="ruby-string">&quot;knight&quot;</span>, <span class="ruby-string">&quot;elephant&quot;</span>, <span class="ruby-string">&quot;queen&quot;</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">class_name</span>.<span class="ruby-identifier">downcase</span>)
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">needs_promotion?</span> <span class="ruby-operator">&amp;&amp;</span> [<span class="ruby-string">&quot;rook&quot;</span>, <span class="ruby-string">&quot;knight&quot;</span>, <span class="ruby-string">&quot;elephant&quot;</span>, <span class="ruby-string">&quot;queen&quot;</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">class_name</span>.<span class="ruby-identifier">downcase</span>)
     <span class="ruby-identifier">raise</span> <span class="ruby-constant">InvalidMove</span>, <span class="ruby-string">&quot;Invalid promotion&quot;</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">set_at</span>(<span class="ruby-ivar">@promotion_coord</span>, <span class="ruby-constant">Module</span>.<span class="ruby-identifier">const_get</span>(<span class="ruby-node">&quot;ChessEngine::#{class_name.capitalize}&quot;</span>).<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@current_color</span>))

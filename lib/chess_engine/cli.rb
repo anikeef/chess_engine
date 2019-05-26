@@ -6,8 +6,14 @@ require "yaml"
 module ChessEngine
   class NoGamesError < StandardError; end
 
+  ##
+  # A Simple command line interface for the Chess Game
+
   class CLI
     include Input
+
+    ##
+    # Starts a new game session
 
     def initialize
       begin

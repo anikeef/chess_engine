@@ -1,15 +1,28 @@
 module ChessEngine
+  ##
+  # This module contains all the private methods needed to check if
+  # some move is valid or not. It is included in the Game class and so uses
+  # some of its attributes: board, current_color and last_piece (for en passant only)
+
   module MoveValidator
+    private
+    ## Excludes from valid_moves all fatal moves
+
     def safe_moves(from)
       valid_moves(from).reject { |move| fatal_move?(from, move) }
     end
+
+    ##
+    # Returns an array of valid moves for a piece at the given position.
+    # Note: this method doesn't exclude moves that lead current king to be attacked
+    # (See +#safe_moves+ method)
 
     def valid_moves(from)
       piece = @board.at(from)
       if piece.king? || piece.knight?
         piece.moves.map do |move|
           to = relative_coords(from, move)
-          to if valid_move?(to)
+          to if possible_move?(to)
         end.compact
       elsif piece.pawn?
         pawn_valid_moves(from)
@@ -18,31 +31,41 @@ module ChessEngine
       end
     end
 
-    def valid_moves_recursive(from)
-      piece = @board.at(from)
-      piece.moves.inject([]) do |valid_moves, move|
-        valid_moves.push(*repeated_move(from, move))
-      end
-    end
+    ##
+    # Returns an array of coordinates that can be reached by recursively
+    # applying the given +move+, starting from the +from+ coordinates
 
     def repeated_move(from, move, valid_moves = [])
       coordinates = relative_coords(from, move)
-      return valid_moves unless valid_move?(coordinates)
+      return valid_moves unless possible_move?(coordinates)
       return valid_moves << coordinates unless @board.at(coordinates).nil?
       repeated_move(coordinates, move, valid_moves << coordinates)
     end
+
+    ##
+    # Returns coordinates that will be reached after applying the +move+,
+    # starting from the +from+ coordinates
 
     def relative_coords(from, move)
       [from[0] + move[0], from[1] + move[1]]
     end
 
-    def valid_move?(coordinates)
+    ##
+    # Returns true if:
+    # * The 8x8 board exists at given coordinates
+    # * Board at given coordinates is empty or it contains a piece with the same
+    #   color as the current_color
+
+    def possible_move?(coordinates)
       if @board.exists_at?(coordinates)
         piece = @board.at(coordinates)
         return (piece.nil? || piece.color != @current_color)
       end
       return false
     end
+
+    ##
+    # Returns true if the current king is attacked after the given move
 
     def fatal_move?(from, to)
       is_fatal = false
@@ -82,6 +105,13 @@ module ChessEngine
         end
       end
       nil
+    end
+
+    def valid_moves_recursive(from)
+      piece = @board.at(from)
+      piece.moves.inject([]) do |valid_moves, move|
+        valid_moves.push(*repeated_move(from, move))
+      end
     end
   end
 end

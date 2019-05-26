@@ -1,4 +1,7 @@
 module ChessEngine
+  ##
+  # This class is made to make move canceling easier if something goes wrong.
+
   class Move
     def initialize(board, from, to)
       @board = board
@@ -13,12 +16,18 @@ module ChessEngine
       end
     end
 
+    ##
+    # Applies the move to the board
+
     def commit
       if en_passant?
         @board.set_at(@en_passant_coord, nil)
       end
       @board.move_piece(@from, @to)
     end
+
+    ##
+    # Moves pieces back and returns the board to the previous state
 
     def rollback
       @original_squares.each do |square|

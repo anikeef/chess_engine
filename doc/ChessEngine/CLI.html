@@ -97,6 +97,8 @@
 
   <section class="description">
     
+<p>A Simple command line interface for the Chess <a href="Game.html">Game</a></p>
+
   </section>
 
   
@@ -129,13 +131,13 @@
 
         <div class="method-description">
           
-          
+          <p>Starts a new game session</p>
           
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/chess_engine/cli.rb, line 12</span>
+            <pre><span class="ruby-comment"># File lib/chess_engine/cli.rb, line 18</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>
   <span class="ruby-keyword">begin</span>
     <span class="ruby-identifier">mode</span> = <span class="ruby-identifier">get_input</span>(<span class="ruby-string">&quot;\nChoose the game mode:\n1. New game\n2. Continue\nEnter your choice (1 or 2): &quot;</span>, <span class="ruby-regexp">/^[12]$/</span>)
