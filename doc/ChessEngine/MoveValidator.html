@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>module ChessEngine::MoveValidator - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+  var index_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-en_passant_coords">#en_passant_coords</a>
+    
+    <li ><a href="#method-i-fatal_move-3F">#fatal_move?</a>
+    
+    <li ><a href="#method-i-pawn_valid_moves">#pawn_valid_moves</a>
+    
+    <li ><a href="#method-i-relative_coords">#relative_coords</a>
+    
+    <li ><a href="#method-i-repeated_move">#repeated_move</a>
+    
+    <li ><a href="#method-i-safe_moves">#safe_moves</a>
+    
+    <li ><a href="#method-i-valid_move-3F">#valid_move?</a>
+    
+    <li ><a href="#method-i-valid_moves">#valid_moves</a>
+    
+    <li ><a href="#method-i-valid_moves_recursive">#valid_moves_recursive</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-ChessEngine::MoveValidator">
+  <h1 id="module-ChessEngine::MoveValidator" class="module">
+    module ChessEngine::MoveValidator
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-en_passant_coords" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">en_passant_coords</span><span
+            class="method-args">(from)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="en_passant_coords-source">
+            <pre><span class="ruby-comment"># File lib/chess_engine/validator.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">en_passant_coords</span>(<span class="ruby-identifier">from</span>)
+  <span class="ruby-identifier">pawn</span> = <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">from</span>)
+  [<span class="ruby-value">1</span>, <span class="ruby-value">-1</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">next_coords</span> = [<span class="ruby-identifier">from</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">x</span>, <span class="ruby-identifier">from</span>[<span class="ruby-value">1</span>]]
+    <span class="ruby-identifier">next_piece</span> = <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">next_coords</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">next_piece</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Pawn</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">next_piece</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@last_piece</span> <span class="ruby-operator">&amp;&amp;</span>
+      <span class="ruby-identifier">next_piece</span>.<span class="ruby-identifier">moves_count</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">from</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">between?</span>(<span class="ruby-value">3</span>, <span class="ruby-value">4</span>)
+        <span class="ruby-keyword">return</span> [<span class="ruby-identifier">from</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">x</span>, <span class="ruby-identifier">from</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">pawn</span>.<span class="ruby-identifier">direction</span>]
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-fatal_move-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">fatal_move?</span><span
+            class="method-args">(from, to)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="fatal_move-3F-source">
+            <pre><span class="ruby-comment"># File lib/chess_engine/validator.rb, line 47</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">fatal_move?</span>(<span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span>)
+  <span class="ruby-identifier">is_fatal</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-identifier">move</span> = <span class="ruby-constant">Move</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@board</span>, <span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span>)
+  <span class="ruby-identifier">move</span>.<span class="ruby-identifier">commit</span>
+  <span class="ruby-identifier">is_fatal</span> = <span class="ruby-keyword">true</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">king_attacked?</span>
+  <span class="ruby-identifier">move</span>.<span class="ruby-identifier">rollback</span>
+  <span class="ruby-identifier">is_fatal</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-pawn_valid_moves" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">pawn_valid_moves</span><span
+            class="method-args">(from)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="pawn_valid_moves-source">
+            <pre><span class="ruby-comment"># File lib/chess_engine/validator.rb, line 56</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">pawn_valid_moves</span>(<span class="ruby-identifier">from</span>)
+  <span class="ruby-identifier">pawn</span> = <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">from</span>)
+  <span class="ruby-identifier">direction</span> = <span class="ruby-identifier">pawn</span>.<span class="ruby-identifier">direction</span>
+  <span class="ruby-identifier">moves</span> = []
+  <span class="ruby-identifier">next_coords</span> = <span class="ruby-identifier">relative_coords</span>(<span class="ruby-identifier">from</span>, [<span class="ruby-value">0</span>, <span class="ruby-identifier">direction</span>])
+  <span class="ruby-identifier">jump_coords</span> = <span class="ruby-identifier">relative_coords</span>(<span class="ruby-identifier">from</span>, [<span class="ruby-value">0</span>, <span class="ruby-identifier">direction</span> <span class="ruby-operator">*</span> <span class="ruby-value">2</span>])
+  <span class="ruby-identifier">take_coords</span> = [<span class="ruby-identifier">relative_coords</span>(<span class="ruby-identifier">from</span>, [<span class="ruby-value">1</span>, <span class="ruby-identifier">direction</span>]),
+    <span class="ruby-identifier">relative_coords</span>(<span class="ruby-identifier">from</span>, [<span class="ruby-value">-1</span>, <span class="ruby-identifier">direction</span>])]
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">exists_at?</span>(<span class="ruby-identifier">next_coords</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">next_coords</span>).<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">moves</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">next_coords</span>
+    <span class="ruby-identifier">moves</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">jump_coords</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">pawn</span>.<span class="ruby-identifier">moves_count</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">jump_coords</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">take_coords</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">coords</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">moves</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">coords</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">coords</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">coords</span>).<span class="ruby-identifier">color</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">pawn</span>.<span class="ruby-identifier">color</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">en_passant_coords</span>(<span class="ruby-identifier">from</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">moves</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">en_passant_coords</span>(<span class="ruby-identifier">from</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">moves</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-relative_coords" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">relative_coords</span><span
+            class="method-args">(from, move)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="relative_coords-source">
+            <pre><span class="ruby-comment"># File lib/chess_engine/validator.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">relative_coords</span>(<span class="ruby-identifier">from</span>, <span class="ruby-identifier">move</span>)
+  [<span class="ruby-identifier">from</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">move</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">from</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">move</span>[<span class="ruby-value">1</span>]]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-repeated_move" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">repeated_move</span><span
+            class="method-args">(from, move, valid_moves = [])</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="repeated_move-source">
+            <pre><span class="ruby-comment"># File lib/chess_engine/validator.rb, line 28</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">repeated_move</span>(<span class="ruby-identifier">from</span>, <span class="ruby-identifier">move</span>, <span class="ruby-identifier">valid_moves</span> = [])
+  <span class="ruby-identifier">coordinates</span> = <span class="ruby-identifier">relative_coords</span>(<span class="ruby-identifier">from</span>, <span class="ruby-identifier">move</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">valid_moves</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">valid_move?</span>(<span class="ruby-identifier">coordinates</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">valid_moves</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">coordinates</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">coordinates</span>).<span class="ruby-identifier">nil?</span>
+  <span class="ruby-identifier">repeated_move</span>(<span class="ruby-identifier">coordinates</span>, <span class="ruby-identifier">move</span>, <span class="ruby-identifier">valid_moves</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">coordinates</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-safe_moves" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">safe_moves</span><span
+            class="method-args">(from)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="safe_moves-source">
+            <pre><span class="ruby-comment"># File lib/chess_engine/validator.rb, line 3</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">safe_moves</span>(<span class="ruby-identifier">from</span>)
+  <span class="ruby-identifier">valid_moves</span>(<span class="ruby-identifier">from</span>).<span class="ruby-identifier">reject</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">move</span><span class="ruby-operator">|</span> <span class="ruby-identifier">fatal_move?</span>(<span class="ruby-identifier">from</span>, <span class="ruby-identifier">move</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-valid_move-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">valid_move?</span><span
+            class="method-args">(coordinates)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="valid_move-3F-source">
+            <pre><span class="ruby-comment"># File lib/chess_engine/validator.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">valid_move?</span>(<span class="ruby-identifier">coordinates</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">exists_at?</span>(<span class="ruby-identifier">coordinates</span>)
+    <span class="ruby-identifier">piece</span> = <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">coordinates</span>)
+    <span class="ruby-keyword">return</span> (<span class="ruby-identifier">piece</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">piece</span>.<span class="ruby-identifier">color</span> <span class="ruby-operator">!=</span> <span class="ruby-ivar">@current_color</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-valid_moves" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">valid_moves</span><span
+            class="method-args">(from)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="valid_moves-source">
+            <pre><span class="ruby-comment"># File lib/chess_engine/validator.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">valid_moves</span>(<span class="ruby-identifier">from</span>)
+  <span class="ruby-identifier">piece</span> = <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">from</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">piece</span>.<span class="ruby-identifier">king?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">piece</span>.<span class="ruby-identifier">knight?</span>
+    <span class="ruby-identifier">piece</span>.<span class="ruby-identifier">moves</span>.<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">move</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">to</span> = <span class="ruby-identifier">relative_coords</span>(<span class="ruby-identifier">from</span>, <span class="ruby-identifier">move</span>)
+      <span class="ruby-identifier">to</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">valid_move?</span>(<span class="ruby-identifier">to</span>)
+    <span class="ruby-keyword">end</span>.<span class="ruby-identifier">compact</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">piece</span>.<span class="ruby-identifier">pawn?</span>
+    <span class="ruby-identifier">pawn_valid_moves</span>(<span class="ruby-identifier">from</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">valid_moves_recursive</span>(<span class="ruby-identifier">from</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-valid_moves_recursive" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">valid_moves_recursive</span><span
+            class="method-args">(from)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="valid_moves_recursive-source">
+            <pre><span class="ruby-comment"># File lib/chess_engine/validator.rb, line 21</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">valid_moves_recursive</span>(<span class="ruby-identifier">from</span>)
+  <span class="ruby-identifier">piece</span> = <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">from</span>)
+  <span class="ruby-identifier">piece</span>.<span class="ruby-identifier">moves</span>.<span class="ruby-identifier">inject</span>([]) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">valid_moves</span>, <span class="ruby-identifier">move</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">valid_moves</span>.<span class="ruby-identifier">push</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">repeated_move</span>(<span class="ruby-identifier">from</span>, <span class="ruby-identifier">move</span>))
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.0.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

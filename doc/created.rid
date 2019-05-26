@@ -1,0 +1,9 @@
+Sun, 26 May 2019 17:37:58 +0600
+lib/chess_engine.rb	Tue, 14 May 2019 14:49:08 +0600
+lib/chess_engine/piece.rb	Tue, 14 May 2019 14:46:44 +0600
+lib/chess_engine/input.rb	Tue, 14 May 2019 14:46:57 +0600
+lib/chess_engine/move.rb	Tue, 14 May 2019 14:46:45 +0600
+lib/chess_engine/cli.rb	Tue, 14 May 2019 20:15:39 +0600
+lib/chess_engine/game.rb	Tue, 14 May 2019 21:10:50 +0600
+lib/chess_engine/validator.rb	Tue, 14 May 2019 14:46:43 +0600
+lib/chess_engine/board.rb	Sun, 26 May 2019 17:30:43 +0600

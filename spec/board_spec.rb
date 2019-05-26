@@ -41,8 +41,8 @@ describe ChessEngine::Board do
     end
 
     it "moves piece between two points" do
-      expect(@board[4, 1]).to be_nil
-      expect(@board[4, 3].pawn?).to eq(true)
+      expect(@board.at([4, 1])).to be_nil
+      expect(@board.at([4, 3]).pawn?).to eq(true)
     end
   end
 
