@@ -40,7 +40,7 @@ module ChessEngine
     # #needs_promotion? method
 
     def move(string)
-      from, to = Game.string_to_move(string)
+      from, to = Game.string_to_coords(string)
       piece = @board.at(from)
       raise InvalidMove, "Game is over" if over?
       raise InvalidMove, "#{@current_color} player should execute pawn promotion first" if needs_promotion?
@@ -180,7 +180,12 @@ module ChessEngine
       false
     end
 
-    def Game.string_to_move(string)
+    ##
+    # Converts a string in algebraic notation to array of coordinates
+    # === Example
+    #   Game.string_to_coord("a2a4") #=> [[0, 1], [0, 3]]
+
+    def Game.string_to_coords(string)
       string = string.gsub(/\s+/, "").downcase
       raise InvalidMove, "Input must look like \"e2 e4\" or \"a6b5\"" unless /^[a-h][1-8][a-h][1-8]$/.match?(string)
       letters = ("a".."h").to_a

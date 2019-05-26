@@ -423,7 +423,7 @@ href="Game.html#method-i-needs_promotion-3F">needs_promotion?</a> method</p>
           <div class="method-source-code" id="move-source">
             <pre><span class="ruby-comment"># File lib/chess_engine/game.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">move</span>(<span class="ruby-identifier">string</span>)
-  <span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span> = <span class="ruby-constant">Game</span>.<span class="ruby-identifier">string_to_move</span>(<span class="ruby-identifier">string</span>)
+  <span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span> = <span class="ruby-constant">Game</span>.<span class="ruby-identifier">string_to_coords</span>(<span class="ruby-identifier">string</span>)
   <span class="ruby-identifier">piece</span> = <span class="ruby-ivar">@board</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">from</span>)
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">InvalidMove</span>, <span class="ruby-string">&quot;Game is over&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">over?</span>
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">InvalidMove</span>, <span class="ruby-node">&quot;#{@current_color} player should execute pawn promotion first&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">needs_promotion?</span>

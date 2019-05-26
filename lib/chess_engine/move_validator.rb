@@ -96,6 +96,9 @@ module ChessEngine
       en_passant_coords(from) ? moves << en_passant_coords(from) : moves
     end
 
+    ##
+    # Returns additional valid coordinates for the pawn if available
+
     def en_passant_coords(from)
       pawn = @board.at(from)
       [1, -1].each do |x|
@@ -108,6 +111,10 @@ module ChessEngine
       end
       nil
     end
+
+    ##
+    # This method is used by #valid_moves for pieces like Queen, Rook and Elephant,
+    # that should move recursively
 
     def valid_moves_recursive(from)
       piece = @board.at(from)
