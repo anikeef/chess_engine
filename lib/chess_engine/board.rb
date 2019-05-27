@@ -32,32 +32,32 @@ module ChessEngine
     end
 
     ##
-    # Returns the piece string on the given position
+    # Returns the piece (or nil) on the given position
     # === Example
-    #   at([0, 0]) #=> Rook:white
+    #   at([0, 0]) #=> <Rook ...>
     #   at([3, 3]) #=> nil
 
 
-    def at(coordinates)
-      return nil unless self.exists_at?(coordinates)
-      @board[coordinates[0]][coordinates[1]]
+    def at(coords)
+      return nil unless self.exists_at?(coords)
+      @board[coords[0]][coords[1]]
     end
 
     ##
     # Sets the board on given coordinates to +piece+
 
-    def set_at(coordinates, piece)
-      @board[coordinates[0]][coordinates[1]] = piece
+    def set_at(coords, piece)
+      @board[coords[0]][coords[1]] = piece
     end
 
     ##
-    # Checks if the values of +coordinates+ are between 0 and 7
+    # Checks if the values of +coords+ are between 0 and 7
     # === Example
     #   exists_at?([0, 0]) #=> true
     #   exists_at?([8, -1]) #=> false
 
-    def exists_at?(coordinates)
-      coordinates.all? { |c| c.between?(0, 7) }
+    def exists_at?(coords)
+      coords.all? { |c| c.between?(0, 7) }
     end
 
     ##
@@ -98,17 +98,17 @@ module ChessEngine
     # Returns the coordinates of the king of given +color+
 
     def king_coords(color)
-      Board.coordinates_list.find do |coord|
-        at(coord) && at(coord).king? && at(coord).color == color
+      Board.coords_list.find do |coords|
+        at(coords) && at(coords).king? && at(coords).color == color
       end
     end
 
     ##
     # Returns the array of coordinates where pieces of given +color+ a located
 
-    def piece_coordinates(color)
-      Board.coordinates_list.select do |coord|
-        piece = at(coord)
+    def pieces_coords(color)
+      Board.coords_list.select do |coords|
+        piece = at(coords)
         !piece.nil? && piece.color == color
       end
     end
@@ -123,7 +123,7 @@ module ChessEngine
       @board[column][row] = piece
     end
 
-    def Board.coordinates_list
+    def Board.coords_list
       list = []
       (0..7).each do |x|
         (0..7).each { |y| list << [x, y]}

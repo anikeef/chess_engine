@@ -38,10 +38,10 @@ module ChessEngine
     private
 
     def repeated_move(from, move, valid_moves = [])
-      coordinates = relative_coords(from, move)
-      return valid_moves unless possible_move?(coordinates)
-      return valid_moves << coordinates unless @board.at(coordinates).nil?
-      repeated_move(coordinates, move, valid_moves << coordinates)
+      coords = relative_coords(from, move)
+      return valid_moves unless possible_move?(coords)
+      return valid_moves << coords unless @board.at(coords).nil?
+      repeated_move(coords, move, valid_moves << coords)
     end
 
     ##
@@ -58,9 +58,9 @@ module ChessEngine
     # * Board at given coordinates is empty or it contains a piece with the same
     #   color as the current_color
 
-    def possible_move?(coordinates)
-      if @board.exists_at?(coordinates)
-        piece = @board.at(coordinates)
+    def possible_move?(coords)
+      if @board.exists_at?(coords)
+        piece = @board.at(coords)
         return (piece.nil? || piece.color != @current_color)
       end
       return false

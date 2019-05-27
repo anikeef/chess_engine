@@ -21,7 +21,7 @@ module ChessEngine
       @current_color = :white
       @last_piece = nil
       @name = nil
-      @promotion_coord = false
+      @promotion_coords = false
     end
 
     ##
@@ -56,7 +56,7 @@ module ChessEngine
 
       @last_piece = piece
       piece.moves_count += 1
-      @promotion_coord = to and return if piece.pawn? && [7, 0].include?(to[1])
+      @promotion_coords = to and return if piece.pawn? && [7, 0].include?(to[1])
       next_player
     end
 
@@ -92,8 +92,8 @@ module ChessEngine
       unless needs_promotion? && ["rook", "knight", "elephant", "queen"].include?(class_name.downcase)
         raise InvalidMove, "Invalid promotion"
       end
-      @board.set_at(@promotion_coord, Module.const_get("ChessEngine::#{class_name.capitalize}").new(@current_color))
-      @promotion_coord = nil
+      @board.set_at(@promotion_coords, Module.const_get("ChessEngine::#{class_name.capitalize}").new(@current_color))
+      @promotion_coords = nil
       next_player
     end
 
@@ -132,8 +132,8 @@ module ChessEngine
     # Returns true if game is over
 
     def over?
-      @board.piece_coordinates(@current_color).all? do |coord|
-        safe_moves(coord).empty?
+      @board.pieces_coords(@current_color).all? do |coords|
+        safe_moves(coords).empty?
       end
     end
 
@@ -141,7 +141,7 @@ module ChessEngine
     # Checks if pawn promotion is needed
 
     def needs_promotion?
-      !!@promotion_coord
+      !!@promotion_coords
     end
 
     ##
@@ -183,7 +183,7 @@ module ChessEngine
     ##
     # Converts a string in algebraic notation to array of coordinates
     # === Example
-    #   Game.string_to_coord("a2a4") #=> [[0, 1], [0, 3]]
+    #   Game.string_to_coords("a2a4") #=> [[0, 1], [0, 3]]
 
     def Game.string_to_coords(string)
       string = string.gsub(/\s+/, "").downcase
